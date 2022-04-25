@@ -1,0 +1,77 @@
+[{
+        "id": 1,
+        "subject": "Pipe in kitchen is leaking",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23",
+        "history": [{
+                "date": "20-10-10",
+                "message": "sjflsjl",
+                "messageBy": "client"
+            },
+            {
+                "date": "20-10-10",
+                "message": "sjflsjl",
+                "messageBy": "admin"
+            },
+            {
+                "date": "20-10-10",
+                "message": "sjflsjl",
+                "messageBy": "client"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "subject": "Issue with sink in the bathroom",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 3,
+        "subject": "Issue with the elevator",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 4,
+        "subject": "Expecting the installation of the window baby safety",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 5,
+        "subject": "Issue with fridge",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 6,
+        "subject": "Issue with the door",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 7,
+        "subject": "Issue with sink",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 8,
+        "subject": "Issue with door",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 9,
+        "subject": "Issue with laundry",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    },
+    {
+        "id": 10,
+        "subject": "Issue with water",
+        "status": "Client response pending",
+        "addedAt": "2020-09-23"
+    }
+]
