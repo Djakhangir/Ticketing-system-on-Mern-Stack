@@ -1,15 +1,17 @@
 import React from 'react'
 import "./App.css";
-import Entry from './Pages/Entry/entry.page';
+// import Entry from './Pages/Entry/entry.page';
 import DefaultLayout from './Layout/DefaultLayout';
-import Dashboard from './Pages/Dashboard/dashboard.page'
+// import Dashboard from './Pages/Dashboard/dashboard.page'
+import AddTicket from './Pages/New-ticket/AddTicket.page';
 
 function App() {
   return (
     <div className="App">
       {/* <Entry/> */}
       <DefaultLayout>
-        <Dashboard/>
+        {/* <Dashboard/> */}
+        <AddTicket/>
       </DefaultLayout>
     </div>
   )
