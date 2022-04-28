@@ -1,7 +1,9 @@
 import React from "react";
 import { Table } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const TicketTable = ({mockTickets}) => {
+  if(!mockTickets.length){}
   return (
     <Table striped bordered hover>
       <thead>
@@ -32,3 +34,7 @@ const TicketTable = ({mockTickets}) => {
 };
 
 export default TicketTable;
+
+TicketTable.propTypes = {
+  mockTickets: PropTypes.array.isRequired
+}
