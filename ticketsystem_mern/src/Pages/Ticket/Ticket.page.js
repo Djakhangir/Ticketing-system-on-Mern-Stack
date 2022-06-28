@@ -4,11 +4,21 @@ import PageBreadcrumb from "../../Components/Breadcrumb/PageBreadcrumb.component
 import MessageHistory  from "../../Components/Message-History/MessageHistory.component";
 import UpdateTicket  from "../../Components/UpdateTicket/UpdateTicket.component";
 import tickets from '../../Assets/data/mock-data.json'
+import {useParams} from 'react-router-dom';
 
-const ticket = tickets[0];
+// const ticket = tickets[0];
 const Ticket = () => {
+  const {tId} = useParams();
   const [message, setmessage] = useState('');
-useEffect(() => {}, [message])
+  const [ticket, setTicket] = useState('');
+useEffect(() => {
+  for(let i=0; i< tickets.length; i++){
+    if(tickets[i].id == tId){
+      setTicket(tickets[i]);
+      continue;
+    }
+  }
+}, [message])
   const handleOnChange = e => {
     setmessage(e.target.value)
   }
@@ -34,8 +44,7 @@ useEffect(() => {}, [message])
         </Col>
       </Row>
       <Row className="mt-4">
-        <Col>
-          <MessageHistory msg={ticket.history}></MessageHistory>
+        <Col>{tickets.history && <MessageHistory msg={ticket.history}/>}
         </Col>
       </Row>
       <Row className="mt-4">
