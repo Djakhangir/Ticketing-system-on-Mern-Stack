@@ -7,6 +7,7 @@ const { insertUser, getUserByEmail } = require('../model/user/User.model');
 
 //password encryption
 const { hashPassword, comparePassword } = require('../helpers/bycript.helper');
+const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper')
 const { json } = require('body-parser');
 
 //router has get, post, all methods;
@@ -51,10 +52,18 @@ router.post('/login', async(req, res) => {
     const passwordFromDb = user && user.id ? user.password : null;
     if (!passwordFromDb)
         return res.json({ status: "error", message: "Invalid email or password" });
+
     ///hash our password and compare with the db;
     const result = await comparePassword(password, passwordFromDb)
     console.log(result);
-    res.json({ status: "success", message: "Login successfull" })
+    if (!result) {
+        return res.json({ status: "error", message: "Invalid email or password" });
+    }
+    //import and use helper jwt function to generate token;
+    const accessJWT = await createAccessJWT(user.email);
+    const refreshJWT = await createRefreshJWT(user.email);
+    res.json({ status: "success", message: "Login successfull", accessJWT, refreshJWT });
+
 })
 
 //export the router;
