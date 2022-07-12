@@ -17,6 +17,7 @@
         "helmet": "^5.1.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.4.3",
-        "morgan": "^1.10.0"
+        "morgan": "^1.10.0",
+        "redis": "^4.2.0"
     }
 }

@@ -7,7 +7,7 @@ Content-Type: application/json
     "company": "AJBuilding",
     "address": "2 Mindy dr Moorestown NJ 08057",
     "phone": "6142661131",
-    "email": "J.atakhanov@yahoo.com",
+    "email": "J.atahanov@yahoo.com",
     "password": "secret123"
 }
 
@@ -17,6 +17,7 @@ POST http://localhost:3001/v1/user/login
 Content-Type: application/json
 
 {
-    "email": "J.atakhanov@yahoo.com",
+    "email": "J.atahanov@yahoo.com",
     "password": "secret123"
 }
+ 
