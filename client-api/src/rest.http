@@ -1,0 +1,22 @@
+### User sign up endpoint
+POST http://localhost:3001/v1/user
+Content-Type: application/json
+
+{
+    "name": "Jake Atakhanov",
+    "company": "AJBuilding",
+    "address": "2 Mindy dr Moorestown NJ 08057",
+    "phone": "6142661131",
+    "email": "J.atakhanov@yahoo.com",
+    "password": "secret123"
+}
+
+
+### User sign in endpoint
+POST http://localhost:3001/v1/user/login
+Content-Type: application/json
+
+{
+    "email": "J.atakanov@yahoo.com",
+    "password": "secret123"
+}

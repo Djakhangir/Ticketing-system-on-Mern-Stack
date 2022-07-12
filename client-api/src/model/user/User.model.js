@@ -8,4 +8,24 @@ const insertUser = userObj => {
     })
 }
 
-module.exports = { insertUser };
+const getUserByEmail = (email) => {
+    return new Promise((resolve, reject) => {
+
+        if (!email) return false;
+        try {
+            //use userSchema to do the query;
+            UserSchema.findOne({ email }, (error, data) => {
+                if (error) {
+                    reject(error)
+                }
+                resolve(data)
+            })
+        } catch (error) {
+            reject(error)
+        }
+
+    })
+
+}
+
+module.exports = { insertUser, getUserByEmail };
