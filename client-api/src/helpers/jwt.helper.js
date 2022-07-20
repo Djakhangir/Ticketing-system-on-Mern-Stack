@@ -11,13 +11,14 @@ const createAccessJWT = async(email, _id) => {
         );
 
         await setJWT(accessJWT, _id)
+
         return Promise.resolve(accessJWT);
     } catch (error) {
         return Promise.reject(error);
     }
 }
 
-const createRefreshJWT = (payload) => {
+const createRefreshJWT = (email) => {
     //implement token, secret code is implement through .env
     const refreshJWT = jwt.sign({ email }, process.env.JWT_REFRESH_SECRET, { expiresIn: '30d' });
 
