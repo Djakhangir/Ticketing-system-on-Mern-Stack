@@ -28,4 +28,19 @@ const getUserByEmail = (email) => {
 
 }
 
-module.exports = { insertUser, getUserByEmail };
+const storeUserRefreshJWT = (_id, token) => {
+    return new Promise((resolve, reject) => {
+        try {
+            UserSchema.findOneAndUpdate({ _id }, {
+                    $set: { "refreshToken.token": token },
+                    "refreshToken.addedAt": Date.now()
+                }, { new: true })
+                .then(data => resolve(data))
+                .catch((error) => reject(error))
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+module.exports = { insertUser, getUserByEmail, storeUserRefreshJWT };

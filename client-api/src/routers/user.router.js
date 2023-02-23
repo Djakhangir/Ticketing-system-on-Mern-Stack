@@ -32,9 +32,8 @@ router.post('/', async(req, res, next) => {
         console.log(error);
         res.json({ status: "error", message: error.message });
     }
-    const result = await insertUser(req.body);
+    const result = insertUser(req.body);
     console.log(result);
-
 })
 
 // User sign in Routers
@@ -60,9 +59,9 @@ router.post('/login', async(req, res) => {
         return res.json({ status: "error", message: "Invalid email or password" });
     }
     //import and use helper jwt function to generate token;
-    const accessJWT = await createAccessJWT(user.email, user._id.toString());
-    const refreshJWT = await createRefreshJWT(user.email);
-    res.json({ status: "success", message: "Login successfull", accessJWT, refreshJWT });
+    const accessJWT = await createAccessJWT(user.email, `${user._id}`);
+    const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
+    res.json({ status: "successs", message: "Login successfull", accessJWT, refreshJWT });
 
 })
 

@@ -8,9 +8,8 @@ Content-Type: application/json
     "address": "2 Mindy dr Moorestown NJ 08057",
     "phone": "6142661131",
     "email": "J.atahanov@yahoo.com",
-    "password": "secret123"
+    "password": "secret1123"
 }
-
 
 ### User sign in endpoint
 POST http://localhost:3001/v1/user/login

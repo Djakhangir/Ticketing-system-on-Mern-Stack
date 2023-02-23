@@ -5,6 +5,7 @@ const client = redis.createClient(process.env.REDIS_URL)
 client.on('error', function(err) { console.log('Redis Client Error', err) });
 //redis://localhost:6379 - default url to access redis db
 const setJWT = (key, value) => {
+    console.log(typeof key, typeof value);
     return new Promise((resolve, reject) => {
         try {
             return client.set(key, value, (err, res) => {

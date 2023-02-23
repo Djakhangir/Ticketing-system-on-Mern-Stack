@@ -4,7 +4,7 @@
     "description": "API for ticketing CRM client app",
     "main": "app.js",
     "scripts": {
-        "start": "Nodemon aoo.js"
+        "start": "Nodemon app.js"
     },
     "author": "Jake Atakhanov",
     "license": "ISC",

@@ -12,9 +12,8 @@ const comparePassword = (plainPass, passFromDB) => {
         // Load hash from your password DB.
         bcrypt.compare(plainPass, passFromDB, function(error, result) {
 
-            if (error) {
-                reject(error);
-            }
+            if (error) reject(error);
+
             resolve(result);
         });
     })

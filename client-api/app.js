@@ -63,7 +63,11 @@ app.use((error, req, res, next) => {
     handleError(error, res);
 })
 
-//nodemon package npm is the one that helps to reload the server everytime twe save the file
+//nodemon package npm is the one that helps to reload the server everytime to save the file
 app.listen(port, () => {
     console.log(`API is ready on http://localhost:${port}`)
 })
+
+// 1. to restart brew and mongo brew services start or restart mongodb/brew/mongodb-community
+// 2. sudo mongod --dbpath /System/Volumes/data/data/db  or 
+// create an alias - alias mongod='sudo mongod --dbpath /System/Volumes/Data/data/db'

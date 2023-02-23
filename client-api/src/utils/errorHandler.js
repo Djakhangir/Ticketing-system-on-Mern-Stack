@@ -4,6 +4,7 @@ const handleError = (error, res) => {
     res.json({
         message: error.message,
     })
+    
 }
 
 module.exports = handleError;
