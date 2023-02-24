@@ -68,6 +68,12 @@ app.listen(port, () => {
     console.log(`API is ready on http://localhost:${port}`)
 })
 
+        //----------to Connect to mongo database-----------//
 // 1. to restart brew and mongo brew services start or restart mongodb/brew/mongodb-community
 // 2. sudo mongod --dbpath /System/Volumes/data/data/db  or 
-// create an alias - alias mongod='sudo mongod --dbpath /System/Volumes/Data/data/db'
+// 3. create an alias - alias mongod='sudo mongod --dbpath /System/Volumes/Data/data/db'
+// 4. run mongod
+// 5. Run the Postman to make calls to database
+// 6. run the npm start or nodemon to start the app
+
+        

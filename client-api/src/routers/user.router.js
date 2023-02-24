@@ -47,7 +47,8 @@ router.post('/login', async(req, res) => {
 
     ///get user with email from db;
     const user = await getUserByEmail(email)
-        /// get the password from db;
+
+    /// get the password from db;
     const passwordFromDb = user && user._id ? user.password : null;
     if (!passwordFromDb)
         return res.json({ status: "error", message: "Invalid email or password" });
@@ -60,7 +61,9 @@ router.post('/login', async(req, res) => {
     }
     //import and use helper jwt function to generate token;
     const accessJWT = await createAccessJWT(user.email, `${user._id}`);
+    console.log(accessJWT)
     const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
+    console.log(refreshJWT)
     res.json({ status: "successs", message: "Login successfull", accessJWT, refreshJWT });
 
 })
