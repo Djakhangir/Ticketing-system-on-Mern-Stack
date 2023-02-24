@@ -3,18 +3,35 @@ const express = require('express');
 const router = express.Router()
 
 //create new user
-const { insertUser, getUserByEmail } = require('../model/user/User.model');
+const { insertUser, getUserByEmail, getUserById } = require('../model/user/User.model');
 
 //password encryption
 const { hashPassword, comparePassword } = require('../helpers/bycript.helper');
-const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper')
-const { json } = require('body-parser');
+const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper');
+const { userAuthorization } = require("../middlewares/authorization.middleware");
 
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
 router.all('/', (req, res, next) => {
     // res.json({ message: "return from user router" });
     next();
+})
+
+
+//Get user profile router
+router.get("/", userAuthorization, async(req, res) => {
+    const _id = req.userId;
+    const userProfile = await getUserById(_id)
+        //this data is fetch const _id = req.usrId from database
+    const user = {
+        "name": "Jake Atakhanov",
+        "company": "AJBuilding",
+        "address": "2 Mindy dr Moorestown NJ 08057",
+        "phone": "6142661131",
+        "email": "J.atahanov@yahoo.com",
+        "password": "secret1123"
+    }
+    res.json({ user: userProfile })
 })
 
 //create new user route
@@ -25,20 +42,16 @@ router.post('/', async(req, res, next) => {
         const hashPass = await hashPassword(password);
         const newUserObj = { name, company, email, address, phone, password: hashPass }
         const result = await insertUser(newUserObj);
-        console.log(result);
         res.json({ message: "New User Created", result });
 
     } catch (error) {
-        console.log(error);
         res.json({ status: "error", message: error.message });
     }
     const result = insertUser(req.body);
-    console.log(result);
 })
 
 // User sign in Routers
 router.post('/login', async(req, res) => {
-    console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -55,15 +68,13 @@ router.post('/login', async(req, res) => {
 
     ///hash our password and compare with the db;
     const result = await comparePassword(password, passwordFromDb)
-    console.log(result);
     if (!result) {
         return res.json({ status: "error", message: "Invalid email or password" });
     }
     //import and use helper jwt function to generate token;
     const accessJWT = await createAccessJWT(user.email, `${user._id}`);
-    console.log(accessJWT)
     const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
-    console.log(refreshJWT)
+
     res.json({ status: "successs", message: "Login successfull", accessJWT, refreshJWT });
 
 })

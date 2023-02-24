@@ -19,4 +19,13 @@ Content-Type: application/json
     "email": "J.atahanov@yahoo.com",
     "password": "secret123"
 }
+
+### Get a user profile endpoint
+GET http://localhost:3001/v1/user
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjc3MjEyNDQ2LCJleHAiOjE2NzcyMTMzNDZ9.NGlvfqZRyRUf3bDvFwDG9h3SukZVxkEBVAsR-3yDxvA
+
+{
+    "email": "J.atahanov@yahoo.com",
+    "password": "secret123"
+}
  
