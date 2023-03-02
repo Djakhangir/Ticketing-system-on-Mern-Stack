@@ -8,14 +8,17 @@ const userAuthorization = async(req, res, next) => {
     //verify if jwt is valid
     const decoded = await verifyAccessJWT(authorization);
 
-    if (!decoded.email) {
+    if (decoded.email) {
         const userId = await getJWT(authorization)
         if (!userId) {
             return res.status(403).json({ message: 'Forbidden' })
         }
         req.userId = userId;
+
+        return next();
     }
-    return next();
+    deleteJWT(authorization);
+    return res.status(403).json({ message: 'Forbidden due to User Authorization' })
 }
 
 module.exports = {
