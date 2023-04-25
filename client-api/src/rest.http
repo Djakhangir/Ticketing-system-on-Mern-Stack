@@ -22,14 +22,18 @@ Content-Type: application/json
 
 ### Get a user profile endpoint
 GET http://localhost:3001/v1/user
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjc3NzQxOTQzLCJleHAiOjE2Nzc3NDIwMDN9.JM5tEi2ue47UO-cSIHdd78W52erD4TSzPU9cD5Taf3g
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjgyMzk2ODA3LCJleHAiOjE2ODIzOTc3MDd9.f-IfJMkqxOrE1V7KgvbPkWM-yPINVrMd97yTKyfWliI
 
-# {
-#     "email": "J.atahanov@yahoo.com",
-#     "password": "secret123"
-# }
 
 ### Get a refreshed token
 GET http://localhost:3001/v1/tokens
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjc3NTU4NDUyLCJleHAiOjE2ODAxNTA0NTJ9.hN00KW_WzBAKE_2eKstyPJsBJ4xPy_Sg99BYBxjTnWo
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjgxMTc0NzEyLCJleHAiOjE2ODM3NjY3MTJ9.ReKbw16jPnEw6vX8A99AR6yAffZBJ-P0u0xCuAYinrY
  
+
+### Password reset request endpoints
+POST http://localhost:3001/v1/user/reset-password
+Content-Type: application/json 
+
+{
+    "email": "J.atahanov@yahoo.com"
+}
