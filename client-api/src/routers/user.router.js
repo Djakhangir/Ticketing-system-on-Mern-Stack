@@ -10,6 +10,7 @@ const { hashPassword, comparePassword } = require('../helpers/bycript.helper');
 const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper');
 const { userAuthorization } = require("../middlewares/authorization.middleware");
 const { setPasswordResetPin } = require("../model/resetPin/ResetPin.model");
+const { emailProcessor } = require('../helpers/email.helper');
 
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
@@ -86,9 +87,22 @@ router.post('/reset-password', async(req, res) => {
 
     //if not user create 6 digit number for the pin
     if (user && user._id) {
+        //generate the random pin
         const setPin = await setPasswordResetPin(email);
 
-        return res.json(setPin);
+        //generate and send email with pin to reset password
+        const result = await emailProcessor(email, setPin.pin)
+
+        if (result && result.messageId) {
+            return res.json({
+                status: "success",
+                message: "If the email exist in our databse, the password reset pin will be sent shortly"
+            })
+        }
+        return res.json({
+            status: "error",
+            message: "Unable to process your request at the moment. Please try again later! "
+        });
     }
 
     res.json({
