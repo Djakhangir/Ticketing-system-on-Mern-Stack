@@ -1,8 +1,10 @@
 const { ResetPinSchema } = require("./ResetPin.schema");
+const { randomPinNumber } = require("../../utils/randomGenerator")
 
-const setPasswordResetPin = (email) => {
+const setPasswordResetPin = async(email) => {
     //create random 6 digit number for the pin name
-    const randomPin = 547634;
+    const pinLength = 6;
+    const randomPin = await randomPinNumber(pinLength);
     const resetObj = {
         email,
         pin: randomPin
