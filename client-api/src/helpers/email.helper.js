@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 
+
 // create reusable transporter object using the default SMTP transport
 
 // ##### Fake host for testing and development purposes.
@@ -16,6 +17,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+//send email with info
 const send = (emailInfo) => {
 
     return new Promise(async(resolve, reject) => {
@@ -38,21 +40,43 @@ const send = (emailInfo) => {
 
 }
 
-const emailProcessor = (email, pin) => {
+//generate email and call send function
 
-    const emailInfo = {
+const emailProcessor = ({ email, pin, type }) => {
+    let emailInfo = '';
+    switch (type) {
+        case "request-new-pass":
+            emailInfo = {
 
-        from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
-        to: email, // list of receivers
-        subject: "Password reset Pin", // Subject line
-        text: "Here is your password reset Pin" + pin + " This pin will expire in 1 day", // plain text body
-        html: `<b>Hello </b>
-            Here is your pin number
-            <b>${pin} </b>
-            <p> This pin will expire in 1 day</p>`, // html body
+                from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
+                to: email, // list of receivers
+                subject: "Password reset Pin", // Subject line
+                text: "Here is your password reset Pin" + pin + " This pin will expire in 1 day", // plain text body
+                html: `<b>Hello </b>
+                    Here is your pin number
+                    <b>${pin} </b>
+                    <p> This pin will expire in 1 day</p>`, // html body
+            }
+
+            send(emailInfo)
+            break;
+        case 'password-update-success':
+            emailInfo = {
+
+                from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
+                to: email, // list of receivers
+                subject: "Password updated", // Subject line
+                text: "Your new password has been updated", // plain text body
+                html: `<b>Hello </b>
+
+            <p>Your new password has been updated</p>`, // html body
+            }
+
+            send(emailInfo)
+        default:
+            break;
     }
 
-    send(emailInfo)
 
 }
 

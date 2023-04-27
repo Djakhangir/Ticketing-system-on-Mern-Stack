@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
     "email": "J.atahanov@yahoo.com",
-    "password": "secret123"
+    "password": "passwordTest"
 }
 
 ### Get a user profile endpoint
@@ -36,4 +36,14 @@ Content-Type: application/json
 
 {
     "email": "J.atahanov@yahoo.com"
+}
+
+### Update new password endpoints
+PATCH http://localhost:3001/v1/user/reset-password
+Content-Type: application/json 
+
+{
+    "email": "J.atahanov@yahoo.com",
+    "pin": 392538,
+    "newPassword": "passwordTest"
 }
