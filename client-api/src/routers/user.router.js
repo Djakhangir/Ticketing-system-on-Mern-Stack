@@ -11,6 +11,7 @@ const { createAccessJWT, createRefreshJWT } = require('../helpers/jwt.helper');
 const { userAuthorization } = require("../middlewares/authorization.middleware");
 const { setPasswordResetPin, getPinByEmailPin, deletePinFromDB } = require("../model/resetPin/ResetPin.model");
 const { emailProcessor } = require('../helpers/email.helper');
+const { resetPasswordRequestValidation, updatePasswordValidation } = require('../middlewares/formValidation.middleware');
 
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
@@ -81,7 +82,7 @@ router.post('/login', async(req, res) => {
 
 })
 
-router.post('/reset-password', async(req, res) => {
+router.post('/reset-password', resetPasswordRequestValidation, async(req, res) => {
     const { email } = req.body;
     const user = await getUserByEmail(email)
 
@@ -105,7 +106,7 @@ router.post('/reset-password', async(req, res) => {
     });
 });
 
-router.patch('/reset-password', async(req, res) => {
+router.patch('/reset-password', updatePasswordValidation, async(req, res) => {
     const { email, pin, newPassword } = req.body;
     const getPin = await getPinByEmailPin(email, pin)
 
@@ -136,7 +137,6 @@ router.patch('/reset-password', async(req, res) => {
     }
     res.json({ status: "error", message: "Unable to update password. Please try again later" });
 });
-
 
 
 //export the router;

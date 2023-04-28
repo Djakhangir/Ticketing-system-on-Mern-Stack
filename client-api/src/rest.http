@@ -44,6 +44,6 @@ Content-Type: application/json
 
 {
     "email": "J.atahanov@yahoo.com",
-    "pin": 392538,
+    "pin": 759701,
     "newPassword": "passwordTest"
 }
