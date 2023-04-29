@@ -47,3 +47,7 @@ Content-Type: application/json
     "pin": 759701,
     "newPassword": "passwordTest"
 }
+
+### User logout endpoint
+DELETE  http://localhost:3001/v1/user/logout
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZAeWFob28uY29tIiwiaWF0IjoxNjgyNzM4NzEyLCJleHAiOjE2ODI3Mzk2MTJ9.Onycwgs__iwNDukbr1JYe9OyOoMr8URDlcHQvrfeGng

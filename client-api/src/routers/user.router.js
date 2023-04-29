@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router()
 
 //create new user
-const { insertUser, getUserByEmail, getUserById, updatePassword } = require('../model/user/User.model');
+const { insertUser, getUserByEmail, getUserById, updatePassword, storeUserRefreshJWT } = require('../model/user/User.model');
 
 //password encryption
 const { hashPassword, comparePassword } = require('../helpers/bycript.helper');
@@ -12,9 +12,9 @@ const { userAuthorization } = require("../middlewares/authorization.middleware")
 const { setPasswordResetPin, getPinByEmailPin, deletePinFromDB } = require("../model/resetPin/ResetPin.model");
 const { emailProcessor } = require('../helpers/email.helper');
 const { resetPasswordRequestValidation, updatePasswordValidation } = require('../middlewares/formValidation.middleware');
-
-//router has get, post, all methods;
-// When router.all() it will always opass through this router. next() is nessesary;
+const { deleteJWT } = require('../helpers/redis.helper')
+    //router has get, post, all methods;
+    // When router.all() it will always opass through this router. next() is nessesary;
 router.all('/', (req, res, next) => {
     // res.json({ message: "return from user router" });
     next();
@@ -137,6 +137,25 @@ router.patch('/reset-password', updatePasswordValidation, async(req, res) => {
     }
     res.json({ status: "error", message: "Unable to update password. Please try again later" });
 });
+
+// user logout and invalidate jwts 
+router.delete("/logout", userAuthorization, async(req, res) => {
+    const { authorization } = req.headers;
+
+    //data coming form db
+    const _id = req.userId;
+
+    //delete the access token from redis db
+    deleteJWT(authorization);
+
+    //delete the refresh token from redis db
+    const result = await storeUserRefreshJWT(_id, '')
+
+    if (result._id) {
+        return res.json({ status: "success", message: "Logged out successfully" })
+    }
+    res.json({ status: "error", message: "Unable to log you out. Please try again later" });
+})
 
 
 //export the router;
