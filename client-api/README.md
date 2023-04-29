@@ -28,6 +28,13 @@ All the user API router follows `/v1/user/`
 
 ### Ticket API Resources
 
+CRUD
+
+1. C = Create Ticket
+2. R = Read Ticket
+3. U = Update Ticket
+4. D = Delete Ticket
+
 All the user API router follows `/v1/ticket/`
 
 | #   | Routers                        | Verbs | Progress | Is Private | Description                             |
