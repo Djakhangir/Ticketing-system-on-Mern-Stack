@@ -3,7 +3,6 @@ const { getJWT, deleteJWT } = require("../helpers/redis.helper")
 
 const userAuthorization = async(req, res, next) => {
     const { authorization } = req.headers
-    console.log(authorization)
 
     //verify if jwt is valid
     const decoded = await verifyAccessJWT(authorization);

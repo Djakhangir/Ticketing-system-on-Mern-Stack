@@ -1,7 +1,9 @@
 //setup the router and import it to app.js;
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
 const { insertTicket } = require('../model/ticket/Ticket.model');
+const { userAuthorization } = require("../middlewares/authorization.middleware");
+
 // TODO: Workflow
 // - Create url endpoints
 // - Receive new ticket Data
@@ -19,13 +21,15 @@ router.all('/', (req, res, next) => {
     next();
 })
 
-router.post('/', async(req, res) => {
+router.post('/', userAuthorization, async(req, res) => {
 
     try {
         // Receive new ticket Data
         const { subject, sender, message } = req.body;
+        const userId = req.userId;
+
         const ticketObj = {
-            clientId: '62d78d69f3b7619920e2f082',
+            clientId: userId,
             subject,
             converstaions: [{
                 sender,
