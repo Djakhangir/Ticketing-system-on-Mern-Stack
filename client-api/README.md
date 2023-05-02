@@ -39,7 +39,7 @@ All the user API router follows `/v1/ticket/`
 
 | #   | Routers                        | Verbs | Progress | Is Private | Description                             |
 | --- | ------------------------------ | ----- | -------- | ---------- | --------------------------------------- |
-| 1   | `/v1/ticket`                   | GET   | ToDo     | Yes        | Get all ticket for the logined in user  |
+| 1   | `/v1/ticket`                   | GET   | Done     | Yes        | Get all ticket for the logined in user  |
 | 2   | `/v1/ticket/{id}`              | GET   | ToDo     | Yes        | Get a ticket details                    |
 | 3   | `/v1/ticket`                   | POST  | Done     | Yes        | Create a new ticket                     |
 | 4   | `/v1/ticket/{id}`              | PUT   | ToDo     | Yes        | Update ticket details ie. reply message |
