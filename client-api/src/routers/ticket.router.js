@@ -1,7 +1,7 @@
 //setup the router and import it to app.js;
 const express = require('express');
 const router = express.Router();
-const { insertTicket, getTickets, getTicketById } = require('../model/ticket/Ticket.model');
+const { insertTicket, getTickets, getTicketById, updateClientReply, updateTicketStatus } = require('../model/ticket/Ticket.model');
 const { userAuthorization } = require("../middlewares/authorization.middleware");
 
 // TODO: Workflow
@@ -12,7 +12,7 @@ const { userAuthorization } = require("../middlewares/authorization.middleware")
 // - Retrive all the ticket for the specific user
 // - Retrive a ticket from mongodb
 // - Update message conversation in the ticket database
-// - Update ticjet status // Closer, operator responsive pending, client response pending
+// - Update ticket status // Close, operator responsive pending, client response pending
 // - Delete ticket form mongodb
 
 //router has get, post, all methods;
@@ -64,7 +64,7 @@ router.get('/', userAuthorization, async(req, res) => {
 
 })
 
-// - Retrive all the ticket for the specific user
+// - Retrive a ticket from mongodb
 router.get('/:_id', userAuthorization, async(req, res) => {
 
     try {
@@ -73,6 +73,47 @@ router.get('/:_id', userAuthorization, async(req, res) => {
         const result = await getTicketById(_id, clientId);
 
         return res.json({ status: 'success', result })
+
+    } catch (error) {
+        res.json({ status: 'error', message: error.message })
+    }
+
+})
+
+// - Update message conversation in the ticket database )reply message
+//TODO: send the clientId as well for security reason to avoid ticket manipulation/hacking
+router.put('/:_id', userAuthorization, async(req, res) => {
+
+        try {
+            const { message, sender } = req.body;
+            const { _id } = req.params;
+            const clientId = req.userId;
+            const result = await updateClientReply({ _id, message, sender });
+            console.log(result)
+
+            if (result._id) {
+                return res.json({ status: 'success', message: 'Your message updated' })
+            }
+            res.json({ status: 'error', message: 'Unable to update your message. Please try again later' })
+
+        } catch (error) {
+            res.json({ status: 'error', message: error.message })
+        }
+
+    })
+    // - Update ticket status // Close, operator responsive pending, client response pending
+router.patch('/close-ticket/:_id', userAuthorization, async(req, res) => {
+
+    try {
+        const { _id } = req.params;
+        const clientId = req.userId;
+        const result = await updateTicketStatus({ _id, clientId });
+        console.log(result)
+
+        if (result._id) {
+            return res.json({ status: 'success', message: 'This ticket has been closed.' })
+        }
+        res.json({ status: 'error', message: 'Unable to update the ticket.' })
 
     } catch (error) {
         res.json({ status: 'error', message: error.message })
