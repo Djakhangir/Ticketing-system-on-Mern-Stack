@@ -1,10 +1,10 @@
 //setup the router and import it to app.js;
 const express = require('express');
 const router = express.Router();
-const { insertTicket, getTickets, getTicketById, updateClientReply, updateTicketStatus } = require('../model/ticket/Ticket.model');
+const { insertTicket, getTickets, getTicketById, updateClientReply, updateTicketStatus, deleteTicket } = require('../model/ticket/Ticket.model');
 const { userAuthorization } = require("../middlewares/authorization.middleware");
 
-// TODO: Workflow
+// Workflow
 // - Create url endpoints
 // - Receive new ticket Data
 // - Authorize every request with JWT
@@ -81,39 +81,56 @@ router.get('/:_id', userAuthorization, async(req, res) => {
 })
 
 // - Update message conversation in the ticket database )reply message
-//TODO: send the clientId as well for security reason to avoid ticket manipulation/hacking
+//TODO: send the clientId as well for security reason to avoid ticket manipulation/hacking, 
+//so that prevents from that loophole, to avoid that somebody can send somebody's ticket to another, reply etc.
 router.put('/:_id', userAuthorization, async(req, res) => {
 
-        try {
-            const { message, sender } = req.body;
-            const { _id } = req.params;
-            const clientId = req.userId;
-            const result = await updateClientReply({ _id, message, sender });
-            console.log(result)
+    try {
+        const { message, sender } = req.body;
+        const { _id } = req.params;
+        const clientId = req.userId;
+        const result = await updateClientReply({ _id, message, sender });
 
-            if (result._id) {
-                return res.json({ status: 'success', message: 'Your message updated' })
-            }
-            res.json({ status: 'error', message: 'Unable to update your message. Please try again later' })
-
-        } catch (error) {
-            res.json({ status: 'error', message: error.message })
+        if (result._id) {
+            return res.json({ status: 'success', message: 'Your message updated' })
         }
+        res.json({ status: 'error', message: 'Unable to update your message. Please try again later' })
 
-    })
-    // - Update ticket status // Close, operator responsive pending, client response pending
+    } catch (error) {
+        res.json({ status: 'error', message: error.message })
+    }
+
+})
+
+// - Update ticket status // Close, operator responsive pending, client response pending
 router.patch('/close-ticket/:_id', userAuthorization, async(req, res) => {
 
     try {
         const { _id } = req.params;
         const clientId = req.userId;
         const result = await updateTicketStatus({ _id, clientId });
-        console.log(result)
 
         if (result._id) {
             return res.json({ status: 'success', message: 'This ticket has been closed.' })
         }
-        res.json({ status: 'error', message: 'Unable to update the ticket.' })
+        res.json({ status: 'error', message: 'Unable to close the ticket.' })
+
+    } catch (error) {
+        res.json({ status: 'error', message: error.message })
+    }
+
+})
+
+// - Delete ticket form mongodb
+// no need to have this in life crm, but added just in case;
+router.delete('/:_id', userAuthorization, async(req, res) => {
+
+    try {
+        const { _id } = req.params;
+        const clientId = req.userId;
+        const result = await deleteTicket({ _id, clientId });
+
+        return res.json({ status: 'success', message: 'This ticket has been deleted.' })
 
     } catch (error) {
         res.json({ status: 'error', message: error.message })

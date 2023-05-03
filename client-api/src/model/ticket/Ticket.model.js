@@ -75,10 +75,24 @@ const updateTicketStatus = ({ _id, clientId }) => {
     })
 }
 
+const deleteTicket = ({ _id, clientId }) => {
+    return new Promise((resolve, reject) => {
+        try {
+            TicketSchema
+                .findOneAndDelete({ _id, clientId })
+                .then(data => resolve(data))
+                .catch(err => reject(err))
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
 module.exports = {
     insertTicket,
     getTickets,
     getTicketById,
     updateClientReply,
-    updateTicketStatus
+    updateTicketStatus,
+    deleteTicket
 }
