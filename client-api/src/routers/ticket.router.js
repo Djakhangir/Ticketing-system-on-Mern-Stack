@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { insertTicket, getTickets, getTicketById, updateClientReply, updateTicketStatus, deleteTicket } = require('../model/ticket/Ticket.model');
 const { userAuthorization } = require("../middlewares/authorization.middleware");
+const { createNewTicketValidation, replyMessageValidation } = require("../middlewares/formValidation.middleware");
 
 // Workflow
 // - Create url endpoints
@@ -23,7 +24,7 @@ router.all('/', (req, res, next) => {
 
 // create new ticket and
 // - Authorize every request with JWT
-router.post('/', userAuthorization, async(req, res) => {
+router.post('/', createNewTicketValidation, userAuthorization, async(req, res) => {
 
     try {
         // Receive new ticket Data
@@ -83,7 +84,7 @@ router.get('/:_id', userAuthorization, async(req, res) => {
 // - Update message conversation in the ticket database )reply message
 //TODO: send the clientId as well for security reason to avoid ticket manipulation/hacking, 
 //so that prevents from that loophole, to avoid that somebody can send somebody's ticket to another, reply etc.
-router.put('/:_id', userAuthorization, async(req, res) => {
+router.put('/:_id', replyMessageValidation, userAuthorization, async(req, res) => {
 
     try {
         const { message, sender } = req.body;
@@ -137,6 +138,8 @@ router.delete('/:_id', userAuthorization, async(req, res) => {
     }
 
 })
+
+
 
 //export the router;
 module.exports = router
