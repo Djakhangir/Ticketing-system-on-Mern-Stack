@@ -8,11 +8,13 @@ const initialData = {
   subject: "",
   issuedate: "",
   details: "",
+  // media: []
 };
 const initialErrorData = {
   subject: false,
   issuedate: false,
   details: false,
+  // media, false,
 };
 
 const AddTicket = () => {
@@ -30,7 +32,7 @@ const AddTicket = () => {
   };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    setformErrorData(initialErrorData)
+    setformErrorData(initialErrorData);
     const isSubjectValid = await shortText(formData.subject);
     setformErrorData({
       ...initialErrorData,
@@ -44,8 +46,8 @@ const AddTicket = () => {
       <Row>
         <Col>
           <PageBreadcrumb pageName="New Ticket" />
-        </Col>
-      </Row>
+        </Col>{" "}
+      </Row>{" "}
       <Row>
         <Col>
           <AddNewTicketForm
@@ -53,9 +55,9 @@ const AddTicket = () => {
             handleOnChange={handleOnChange}
             formData={formData}
             formErrorData={formErrorData}
-          />
-        </Col>
-      </Row>
+          />{" "}
+        </Col>{" "}
+      </Row>{" "}
     </Container>
   );
 };
