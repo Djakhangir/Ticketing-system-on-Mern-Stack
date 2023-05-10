@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import ticketsReducer from "./Pages/Ticket-List/ticketsSlice";
 
 const store = configureStore({
-    reducer: {},
+    reducer: { tickets: ticketsReducer },
 });
 
 export default store;
