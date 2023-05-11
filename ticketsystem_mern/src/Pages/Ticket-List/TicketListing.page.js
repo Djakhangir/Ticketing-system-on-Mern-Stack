@@ -12,25 +12,11 @@ const TicketList = () => {
   const dispatch = useDispatch();
 
   const [str, setstr] = useState("");
-  const [showFiltered, setshowFiltered] = useState(tickets);
 
   useEffect(() => {
     dispatch(fetchAllTickets());
-  }, [str, showFiltered]);
+  }, [str, dispatch]);
 
-  const handleOnChange = (e) => {
-    const { value } = e.target;
-    setstr(value);
-    filterTickerBySearch(value);
-  };
-
-  const filterTickerBySearch = (str) => {
-    const displayTicket = tickets.filter((info) =>
-      info.subject.toLowerCase().includes(str.toLowerCase())
-    );
-
-    setshowFiltered(displayTicket);
-  };
 
   return (
     <Container>
@@ -46,13 +32,13 @@ const TicketList = () => {
           </Link>{" "}
         </Col>{" "}
         <Col className="text-right">
-          <SearchForm handleOnChange={handleOnChange} str={str} />{" "}
+          <SearchForm />
         </Col>{" "}
       </Row>{" "}
       <hr />
       <Row>
         <Col>
-          <TicketTable mockTickets={showFiltered} />{" "}
+          <TicketTable />{" "}
         </Col>{" "}
       </Row>{" "}
     </Container>
