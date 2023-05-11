@@ -8,7 +8,6 @@ import Dashboard from "./Pages/Dashboard/dashboard.page";
 import AddTicket from "./Pages/New-ticket/AddTicket.page";
 import TicketList from "./Pages/Ticket-List/TicketListing.page";
 import Ticket from "./Pages/Ticket/Ticket.page";
-import { createApi } from "@reduxjs/toolkit/query/react";
 
 function App() {
   return (
@@ -17,23 +16,23 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Entry />
-          </Route>{" "}
-          {/* <DefaultLayout> */}{" "}
+          </Route>
+          {/* <DefaultLayout> */}
           <PrivateRoute exact path="/dashboard">
             <Dashboard />
-          </PrivateRoute>{" "}
+          </PrivateRoute>
           <PrivateRoute path="/add-ticket">
             <AddTicket />
-          </PrivateRoute>{" "}
+          </PrivateRoute>
           <PrivateRoute exact path="/tickets">
             <TicketList />
-          </PrivateRoute>{" "}
+          </PrivateRoute>
           <PrivateRoute path="/ticket/:tId">
             <Ticket />
-          </PrivateRoute>{" "}
-          {/* </DefaultLayout> */}{" "}
-        </Switch>{" "}
-      </Router>{" "}
+          </PrivateRoute>
+          {/* </DefaultLayout> */}
+        </Switch>
+      </Router>
     </div>
   );
 }
