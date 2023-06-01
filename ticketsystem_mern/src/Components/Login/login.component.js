@@ -12,6 +12,7 @@ import {
 import { loginPending, loginSuccess, loginFail } from "./loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
+import { getUserProfile } from "../../Pages/Dashboard/userAction";
 
 import { userLogin } from "../../Api/userApi";
 
@@ -50,6 +51,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
         dispatch(loginFail(isAuth.message));
       }
       dispatch(loginSuccess());
+      dispatch(getUserProfile());
       history.push('/dashboard');
       console.log(isAuth);
     } catch (error) {
