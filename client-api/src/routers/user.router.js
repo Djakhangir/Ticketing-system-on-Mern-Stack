@@ -34,7 +34,13 @@ router.get("/", userAuthorization, async(req, res) => {
         //     "email": "J.atahanov@yahoo.com",
         //     "password": "secret1123"
         // }
-    res.json({ user: userProfile })
+        const { name, email} = userProfile
+    res.json({ user: {
+        _id, 
+        name, 
+        email
+    } 
+})
 })
 
 //create new user route
@@ -78,7 +84,7 @@ router.post('/login', async(req, res) => {
     const accessJWT = await createAccessJWT(user.email, `${user._id}`);
     const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
 
-    res.json({ status: "successs", message: "Login successfull", accessJWT, refreshJWT });
+    res.json({ status: "success", message: "Login successfull", accessJWT, refreshJWT });
 
 })
 

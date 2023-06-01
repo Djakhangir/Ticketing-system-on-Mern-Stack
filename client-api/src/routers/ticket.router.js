@@ -81,7 +81,7 @@ router.get('/:_id', userAuthorization, async(req, res) => {
 
 })
 
-// - Update message conversation in the ticket database )reply message
+// - Update (reply) message conversation in the ticket database )
 //TODO: send the clientId as well for security reason to avoid ticket manipulation/hacking, 
 //so that prevents from that loophole, to avoid that somebody can send somebody's ticket to another, reply etc.
 router.put('/:_id', replyMessageValidation, userAuthorization, async(req, res) => {

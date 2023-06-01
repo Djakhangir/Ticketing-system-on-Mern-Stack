@@ -1,3 +1,14 @@
+# Run Backend
+# Connect to mongo database-----------//
+1. to restart brew and mongo -> brew services restart mongodb/brew/mongodb-community
+2. To Start Backend -> sudo mongod --dbpath /System/Volumes/data/data/db  or 
+3. create an alias -> alias mongod='sudo mongod --dbpath /System/Volumes/Data/data/db'
+4. run -> mongod
+5. Run Postman to make calls to database
+6. run the -> npm start -or-> nodemon -to start the app
+7. Open Compass Mongodb
+
+
 # CRM Client side API
 
 This api is a part of create CRM Ticket system with MERN stack from scratch tutorial series.
