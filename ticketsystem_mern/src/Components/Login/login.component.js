@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Container,
@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { loginPending, loginSuccess, loginFail } from "./loginSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import { getUserProfile } from "../../Pages/Dashboard/userAction";
 
 import { userLogin } from "../../Api/userApi";
@@ -21,8 +21,14 @@ const LoginForm = ({ loginFormSwitcher }) => {
   const history = useHistory();
 
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
-  const [email, setemail] = useState("");
-  const [password, setpassword] = useState("");
+
+  useEffect(() => {
+    sessionStorage.getItem("accessJWT")&&
+      history.push("/dashboard");
+  }, [history, isAuth]);
+
+  const [email, setemail] = useState("J.atahanov@yahoo.com");
+  const [password, setpassword] = useState("passwordTest");
 
   const handleonChange = (e) => {
     const { name, value } = e.target;
@@ -47,12 +53,12 @@ const LoginForm = ({ loginFormSwitcher }) => {
     dispatch(loginPending());
     try {
       const isAuth = await userLogin({ email, password });
-      if(isAuth.status === 'error'){
+      if (isAuth.status === "error") {
         dispatch(loginFail(isAuth.message));
       }
       dispatch(loginSuccess());
       dispatch(getUserProfile());
-      history.push('/dashboard');
+      history.push("/dashboard");
       console.log(isAuth);
     } catch (error) {
       dispatch(loginFail(error.message));
@@ -67,7 +73,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
           {error && <Alert variant="danger">{error}</Alert>}
           <Form autoComplete="off" onSubmit={handleOnSubmit}>
             <Form.Group>
-              <Form.Label> Email Address </Form.Label>{" "}
+              <Form.Label> Email Address </Form.Label>
               <Form.Control
                 onChange={handleonChange}
                 type="email"
@@ -75,10 +81,10 @@ const LoginForm = ({ loginFormSwitcher }) => {
                 value={email}
                 placeholder="Enter Email"
                 required
-              ></Form.Control>{" "}
-            </Form.Group>{" "}
+              ></Form.Control>
+            </Form.Group>
             <Form.Group>
-              <Form.Label> Password </Form.Label>{" "}
+              <Form.Label> Password </Form.Label>
               <Form.Control
                 type="password"
                 name="password"
@@ -86,23 +92,22 @@ const LoginForm = ({ loginFormSwitcher }) => {
                 placeholder="Password"
                 onChange={handleonChange}
                 required
-              ></Form.Control>{" "}
-            </Form.Group>{" "}
+              ></Form.Control>
+            </Form.Group>
             <br />
             <Button type="submit"> Login </Button>
             {isLoading && <Spinner variant="primary" animation="border" />}
-          </Form>{" "}
+          </Form>
           <hr />
-        </Col>{" "}
-      </Row>{" "}
+        </Col>
+      </Row>
       <Row>
         <Col>
           <a href="#!" onClick={() => loginFormSwitcher(true)}>
-            {" "}
-            Forget Password ?{" "}
-          </a>{" "}
-        </Col>{" "}
-      </Row>{" "}
+            Forget Password ?
+          </a>
+        </Col>
+      </Row>
     </Container>
   );
 };
