@@ -24,8 +24,6 @@ const ticketListSlice = createSlice({
             state.error = payload;
         },
         searchTickets: (state, { payload }) => {
-
-
             state.searchTicketList = state.tickets.filter(row => {
                 if (!payload) return row
 

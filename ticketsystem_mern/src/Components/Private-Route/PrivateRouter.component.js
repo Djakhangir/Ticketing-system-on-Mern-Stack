@@ -12,12 +12,13 @@ const PrivateRouter = ({ children, ...rest }) => {
   useEffect(() => {
     const updateAccessJWT = async() => {
     const result = await fetchNewAccessJWT();
-    result && dispatch(loginSuccess())
+    result && dispatch(loginSuccess());
   };
+!sessionStorage.getItem('accessJWT') && localStorage.getItem('buildingmgmSite') && updateAccessJWT();
 
-  updateAccessJWT();
-    sessionStorage.getItem("accessJWT") && dispatch(loginSuccess());
-  }, [dispatch]);
+    !isAuth && sessionStorage.getItem("accessJWT") && dispatch(loginSuccess());
+  }, [dispatch, isAuth]);
+
   return (
     <Route
       {...rest}
