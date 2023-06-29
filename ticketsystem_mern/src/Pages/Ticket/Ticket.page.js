@@ -1,24 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import PageBreadcrumb from "../../Components/Breadcrumb/PageBreadcrumb.component";
 import MessageHistory from "../../Components/Message-History/MessageHistory.component";
 import UpdateTicket from "../../Components/UpdateTicket/UpdateTicket.component";
 import tickets from "../../Assets/data/mock-data.json";
 import { useParams } from "react-router-dom";
+import { fetchTicket } from '../Ticket-List/ticketsAction';
 
 // const ticket = tickets[0];
 const Ticket = () => {
   const { tId } = useParams();
+  const dispatch = useDispatch();
   const [message, setmessage] = useState("");
   const [ticket, setTicket] = useState("");
   useEffect(() => {
-    for (let i = 0; i < tickets.length; i++) {
-      if (tickets[i].id === tId) {
-        setTicket(tickets[i]);
-        continue;
-      }
-    }
-  }, [message]);
+    dispatch(fetchTicket(tId))
+  }, [message, tId, dispatch]);
   const handleOnChange = (e) => {
     setmessage(e.target.value);
   };
