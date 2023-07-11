@@ -1,26 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
+import { replyOnTicket } from "../../Pages/Ticket-List/ticketsAction";
 
-const UpdateTicket = ({msg, handleOnChange, handleOnSubmit}) => {
+const UpdateTicket = ({ _id }) => {
+  const {
+    user: { name },
+  } = useSelector((state) => state.user);
+  const { replyMsg } = useSelector((state) => state.tickets);
+
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
+
+  const handleOnChange = (e) => {
+    setMessage(e.target.value);
+  };
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const msgObj = {
+      message,
+      sender: name,
+    };
+    dispatch(replyOnTicket(_id, msgObj));
+    setMessage('')
+  };
   return (
-    <Form onSubmit={handleOnSubmit}>
-      <Form.Label>Reply</Form.Label>
-      <Form.Text>Please reply here or update the ticket</Form.Text>
-      <Form.Control as="textarea" row="5" name="detail" value={msg} onChange={handleOnChange}/>
-      <div className="text-right mt-3 mb-3">
-        <Button variant="info" type="submit">
-          Reply
-        </Button>
-      </div>
-    </Form>
+    <div>
+      {replyMsg && <Alert variant="success">{replyMsg}</Alert>}
+      <Form onSubmit={handleOnSubmit}>
+        <Form.Label>Reply</Form.Label>
+        <Form.Text>Please reply here or update the ticket</Form.Text>
+        <Form.Control
+          as="textarea"
+          row="5"
+          name="detail"
+          value={message}
+          onChange={handleOnChange}
+        />
+        <div className="text-right mt-3 mb-3">
+          <Button variant="info" type="submit">
+            Reply
+          </Button>
+        </div>
+      </Form>
+    </div>
   );
 };
 
 export default UpdateTicket;
 
 UpdateTicket.propTypes = {
-    msg: PropTypes.string.isRequired,
-    handleOnChange: PropTypes.func.isRequired,
-    handleOnSubmit: PropTypes.func.isRequired,
-  };
+  _id: PropTypes.string.isRequired,
+};
