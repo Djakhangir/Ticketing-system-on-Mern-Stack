@@ -7,13 +7,13 @@ import UpdateTicket from "../../Components/UpdateTicket/UpdateTicket.component";
 // import tickets from "../../Assets/data/mock-data.json";
 import { useParams } from "react-router-dom";
 import { fetchTicket, closeTicket } from "../Ticket-List/ticketsAction";
+import { resetResponseMsg } from "../Ticket-List/ticketsSlice";
 
 // const ticket = tickets[0];
 const Ticket = () => {
-  const { replyMsg } = useSelector((state) => state.tickets);
   const { tId } = useParams();
   const dispatch = useDispatch();
-  const { isLoading, error, selectedTicket, replyTicketError } = useSelector(
+  const { isLoading, error, selectedTicket, replyTicketError, replyMsg } = useSelector(
     (state) => state.tickets
   );
 
@@ -22,7 +22,10 @@ const Ticket = () => {
 
   useEffect(() => {
     dispatch(fetchTicket(tId));
-  }, [tId, dispatch]);
+    return () => {
+      (replyTicketError || replyMsg) && dispatch(resetResponseMsg());
+    }
+  }, [tId, dispatch, replyTicketError, replyMsg]);
 
   return (
     <Container>

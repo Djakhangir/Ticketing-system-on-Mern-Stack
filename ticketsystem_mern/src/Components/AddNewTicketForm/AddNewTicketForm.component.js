@@ -6,6 +6,7 @@ import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
 import "./AddNewTicketForm.style.css";
 import { shortText } from "../../Utils/Validation";
 import { openNewTicket } from "./AddTicketAction";
+import { resetSuccessMsg } from "./AddTicketSlice";
 
 const initialData = {
   subject: "",
@@ -32,7 +33,11 @@ const AddNewTicketForm = () => {
   const [formData, setformData] = useState(initialData);
   const [formErrorData, setformErrorData] = useState(initialErrorData);
 
-  useEffect(() => {}, [formData, formErrorData]);
+  useEffect(() => {
+    return () => {
+      successMsg && dispatch(resetSuccessMsg())
+    }
+  }, [dispatch, formData, formErrorData]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;

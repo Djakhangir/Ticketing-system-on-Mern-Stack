@@ -15,6 +15,7 @@ export const openNewTicket = (formData) => (dispatch) => {
       }
 
       dispatch(openNewTicketSuccess(result.message));
+      
     } catch (error) {
       console.log(error);
       dispatch(openNewTicketFail(error.message));
