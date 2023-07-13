@@ -1,15 +1,66 @@
-import React from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+// import PropTypes from "prop-types";
 
-import './AddNewTicketForm.style.css'
+import "./AddNewTicketForm.style.css";
+import { shortText } from "../../Utils/Validation";
+import { openNewTicket } from "./AddTicketAction";
 
-const AddNewTicketForm = ({ handleOnSubmit, handleOnChange, formData, formErrorData }) => {
-    console.log(formData);
+const initialData = {
+  subject: "",
+  issueDate: "",
+  message: "",
+  // media: []
+};
+const initialErrorData = {
+  subject: false,
+  issueDate: false,
+  message: false,
+  // media, false,
+};
+
+const AddNewTicketForm = () => {
+  const dispatch = useDispatch();
+  const {
+    user: { name },
+  } = useSelector((state) => state.user);
+  const {
+    isLoading, error, successMsg
+  } = useSelector((state) => state.openTicket);
+
+  const [formData, setformData] = useState(initialData);
+  const [formErrorData, setformErrorData] = useState(initialErrorData);
+
+  useEffect(() => {}, [formData, formErrorData]);
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setformData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    setformErrorData(initialErrorData);
+    const isSubjectValid = await shortText(formData.subject);
+    setformErrorData({
+      ...initialErrorData,
+      subject: !isSubjectValid,
+    });
+    dispatch(openNewTicket({ ...formData, sender: name }));
+  };
+
   return (
     <div className="jumbotron add-new-ticket mt-3">
-      <h1 className='text-info text-center'>Add New Ticket</h1>
-      <hr/>
+      <h1 className="text-info text-center">Add New Ticket</h1>
+      <hr />
+      <div>
+        {error && <Alert variant="danger">{error}</Alert>}
+        {successMsg && <Alert variant="primary">{successMsg}</Alert>}
+        {isLoading && <Spinner variant="primary" animation="border"/>}
+      </div>
       <Form autoComplete="off" onSubmit={handleOnSubmit}>
         <Form.Group as={Row}>
           <Form.Label column sm={3}>
@@ -23,7 +74,9 @@ const AddNewTicketForm = ({ handleOnSubmit, handleOnChange, formData, formErrorD
               value={formData.subject}
               required
             ></Form.Control>
-            <Form.Text className="text-danger">{formErrorData.subject && 'Subject is required'}</Form.Text>
+            <Form.Text className="text-danger">
+              {formErrorData.subject && "Subject is required"}
+            </Form.Text>
           </Col>
         </Form.Group>
         <Form.Group as={Row}>
@@ -33,9 +86,9 @@ const AddNewTicketForm = ({ handleOnSubmit, handleOnChange, formData, formErrorD
           <Col sm={9}>
             <Form.Control
               type="date"
-              name="issuedate"
+              name="issueDate"
               onChange={handleOnChange}
-              value={formData.issuedate}
+              value={formData.issueDate}
               required
             ></Form.Control>
           </Col>
@@ -44,16 +97,16 @@ const AddNewTicketForm = ({ handleOnSubmit, handleOnChange, formData, formErrorD
           <Form.Label> Details </Form.Label>
           <Form.Control
             as="textarea"
-            name="details"
+            name="message"
             onChange={handleOnChange}
             rows="5"
-            value={formData.details}
+            value={formData.message}
             required
           ></Form.Control>
         </Form.Group>
         <br />
-        <Button type="submit" variant="info" block='true'>
-          Submit Form
+        <Button type="submit" variant="info" block="true">
+          Open Ticket
         </Button>
       </Form>
     </div>
@@ -62,9 +115,9 @@ const AddNewTicketForm = ({ handleOnSubmit, handleOnChange, formData, formErrorD
 
 export default AddNewTicketForm;
 
-AddNewTicketForm.propTypes = {
-    handleOnSubmit: PropTypes.func.isRequired,
-    handleOnChange: PropTypes.func.isRequired,
-    formData: PropTypes.object.isRequired,
-    formErrorData: PropTypes.object.isRequired
-}
+// AddNewTicketForm.propTypes = {
+//     handleOnSubmit: PropTypes.func.isRequired,
+//     handleOnChange: PropTypes.func.isRequired,
+//     formData: PropTypes.object.isRequired,
+//     formErrorData: PropTypes.object.isRequired
+// }

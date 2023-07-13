@@ -9,11 +9,15 @@ import {
   replyTicketLoading,
   replyTicketSuccess,
   replyTicketFail,
+  closeTicketLoading,
+  closeTicketSuccess,
+  closeTicketFail,
 } from "./ticketsSlice";
 import {
   getAllTickets,
   getTicket,
   updateReplyTicket,
+  updateTicketStatustoClose,
 } from "../../Api/ticketApi";
 
 export const fetchAllTickets = () => async (dispatch) => {
@@ -61,5 +65,21 @@ export const replyOnTicket = (_id, msgObj) => async (dispatch) => {
     dispatch(replyTicketSuccess(result.message));
   } catch (error) {
     dispatch(replyTicketFail(error.message));
+  }
+};
+
+//Actions to close a ticket
+export const closeTicket = (_id) => async (dispatch) => {
+  dispatch(closeTicketLoading());
+  try {
+    const result = await updateTicketStatustoClose(_id);
+    console.log(result);
+    if (result.status === "error") {
+      return dispatch(closeTicketFail(result.message));
+    }
+    dispatch(fetchTicket(_id));
+    dispatch(closeTicketSuccess(result.message));
+  } catch (error) {
+    dispatch(closeTicketFail(error.message));
   }
 };

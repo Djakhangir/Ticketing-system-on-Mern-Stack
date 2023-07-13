@@ -24,16 +24,7 @@ router.all('/', (req, res, next) => {
 //Get user profile router
 router.get("/", userAuthorization, async(req, res) => {
     const _id = req.userId;
-    const userProfile = await getUserById(_id)
-        //this data is fetch const _id = req.usrId from database
-        // const user = {
-        //     "name": "Jake Atakhanov",
-        //     "company": "AJBuilding",
-        //     "address": "2 Mindy dr Moorestown NJ 08057",
-        //     "phone": "6142661131",
-        //     "email": "J.atahanov@yahoo.com",
-        //     "password": "secret1123"
-        // }
+    const userProfile = await getUserById(_id);
         const { name, email} = userProfile
     res.json({ user: {
         _id, 

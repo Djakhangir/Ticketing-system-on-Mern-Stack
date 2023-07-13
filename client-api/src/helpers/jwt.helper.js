@@ -8,7 +8,7 @@ const createAccessJWT = async(email, _id) => {
     try {
         //implement token, secret code is implement through .env
         const accessJWT = await jwt.sign({ email },
-            process.env.JWT_ACCESS_SECRET, { expiresIn: "15m" }
+            process.env.JWT_ACCESS_SECRET, { expiresIn: "3h" }
         );
         await setJWT(accessJWT, _id)
 

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { replyOnTicket } from "../../Pages/Ticket-List/ticketsAction";
 
 const UpdateTicket = ({ _id }) => {
   const {
     user: { name },
   } = useSelector((state) => state.user);
-  const { replyMsg } = useSelector((state) => state.tickets);
-
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
@@ -27,7 +25,6 @@ const UpdateTicket = ({ _id }) => {
   };
   return (
     <div>
-      {replyMsg && <Alert variant="success">{replyMsg}</Alert>}
       <Form onSubmit={handleOnSubmit}>
         <Form.Label>Reply</Form.Label>
         <Form.Text>Please reply here or update the ticket</Form.Text>

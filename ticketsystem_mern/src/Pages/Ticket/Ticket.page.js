@@ -6,22 +6,23 @@ import MessageHistory from "../../Components/Message-History/MessageHistory.comp
 import UpdateTicket from "../../Components/UpdateTicket/UpdateTicket.component";
 // import tickets from "../../Assets/data/mock-data.json";
 import { useParams } from "react-router-dom";
-import { fetchTicket } from "../Ticket-List/ticketsAction";
+import { fetchTicket, closeTicket } from "../Ticket-List/ticketsAction";
 
 // const ticket = tickets[0];
 const Ticket = () => {
+  const { replyMsg } = useSelector((state) => state.tickets);
   const { tId } = useParams();
   const dispatch = useDispatch();
-  const { isLoading, error, selectedTicket } = useSelector(
+  const { isLoading, error, selectedTicket, replyTicketError } = useSelector(
     (state) => state.tickets
   );
 
-  const [message, setmessage] = useState("");
-  const [ticket, setTicket] = useState("");
+  // const [message, setmessage] = useState("");
+  // const [ticket, setTicket] = useState("");
 
   useEffect(() => {
     dispatch(fetchTicket(tId));
-  }, [message, tId, dispatch]);
+  }, [tId, dispatch]);
 
   return (
     <Container>
@@ -34,16 +35,28 @@ const Ticket = () => {
         <Col>
           {isLoading && <Spinner variant="primary" animation="border" />}
           {error && <Alert variant="danger">{error}</Alert>}
+          {replyTicketError && <Alert variant="danger">{replyTicketError}</Alert>}
+          {replyMsg && <Alert variant="success">{replyMsg}</Alert>}
         </Col>
       </Row>
       <Row>
         <Col className="text-weight-bolder text-secondary">
           <div className="subject"> Subject: {selectedTicket.subject} </div>
-          <div className="date"> Ticket Opened: {selectedTicket.openAt && new Date(selectedTicket.openAt).toLocaleString()} </div>
+          <div className="date">
+            Ticket Opened:
+            {selectedTicket.openAt &&
+              new Date(selectedTicket.openAt).toLocaleString()}
+          </div>
           <div className="status"> Status: {selectedTicket.status} </div>
         </Col>
         <Col className="text-right">
-          <Button variant="outline-info"> Close ticket </Button>
+          <Button
+            variant="outline-info"
+            onClick={() => dispatch(closeTicket(tId))}
+            disabled={selectedTicket.status === "Closed"}
+          >
+            Close ticket
+          </Button>
         </Col>
       </Row>
       <Row className="mt-4">
