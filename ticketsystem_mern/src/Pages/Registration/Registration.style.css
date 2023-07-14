@@ -1,6 +1,11 @@
 .registration-page {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* height: 100vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.test{
+  margin: 5rem !important;
+  padding: 25px;
 }

@@ -1,9 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row, Button, Form } from "react-bootstrap";
 
+const initialState = {
+  name: "",
+  phone: "",
+  email: "",
+  company: "",
+  address: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const passwordVerification = {
+  isLengthy: false,
+  hasUpper: false,
+  hasLower: false,
+  hasNumber: false,
+  hasSpclChar: false,
+  confirmPassword: false,
+};
+
 const RegistrationForm = () => {
+  //initial states
+  const [newUser, setNewUser] = useState(initialState);
+  const [passwordError, setPasswordError] = useState(passwordVerification);
+
+  // prevent rerendering the page
+  useEffect(() => {}, [newUser]);
+
+  //changes on input field
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+
+    //password check on requirements
+    if (name === "password") {
+      const isLengthy = value.length > 8;
+      const hasUpper = /[A-Z]/.test(value);
+      const hasLower = /[a-z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSpclChar = /[!@#$%&*_-]/.test(value);
+      setPasswordError({
+        ...passwordError,
+        isLengthy,
+        hasUpper,
+        hasLower,
+        hasNumber,
+        hasSpclChar,
+      });
+    }
+
+    //check if password an dconfirma password field matche
+    if (name === "confirmPassword") {
+      setPasswordError({
+        ...passwordError,
+        confirmPassword: newUser.password === value,
+      });
+    }
+  };
+
+  //submit the form
+  const handleOnSubmit = e => {
+    //prevents on reloading everytime we click the button;
+e.preventDefault();
+console.log(newUser)
+  }
+
   return (
-    <div>
+    <div className="registerForm">
       <Container>
         <Row>
           <Col>
@@ -13,20 +77,38 @@ const RegistrationForm = () => {
         <hr />
         <Row>
           <Col>
-            <Form>
+            <Form onSubmit={handleOnSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Full Name</Form.Label>
-                <Form.Control type="text" placeholder="Your Full Name" />
+                <Form.Control
+                  type="text"
+                  name="name"
+                  value={newUser.name}
+                  onChange={handleOnChange}
+                  placeholder="Your Full Name"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Phone</Form.Label>
-                <Form.Control type="number" placeholder="Phone Number" />
+                <Form.Control
+                  type="number"
+                  name="phone"
+                  value={newUser.phone}
+                  onChange={handleOnChange}
+                  placeholder="Phone Number"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={newUser.email}
+                  onChange={handleOnChange}
+                  placeholder="Enter email"
+                />
                 <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
                 </Form.Text>
@@ -34,39 +116,104 @@ const RegistrationForm = () => {
 
               <Form.Group className="mb-3">
                 <Form.Label>Company Name</Form.Label>
-                <Form.Control type="text" placeholder="Comany Name" />
+                <Form.Control
+                  type="text"
+                  name="company"
+                  value={newUser.company}
+                  onChange={handleOnChange}
+                  placeholder="Comany Name"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Address</Form.Label>
-                <Form.Control type="text" placeholder="Full Address" />
+                <Form.Control
+                  type="text"
+                  name="address"
+                  value={newUser.address}
+                  onChange={handleOnChange}
+                  placeholder="Full Address"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  name="password"
+                  value={newUser.password}
+                  onChange={handleOnChange}
+                  placeholder="Password"
+                />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control type="password" placeholder="Confirm Password" />
+                <Form.Control
+                  type="password"
+                  name="confirmPassword"
+                  value={newUser.confirmPassword}
+                  onChange={handleOnChange}
+                  placeholder="Confirm Password"
+                />
               </Form.Group>
+              <Form.Text>{!passwordError.confirmPassword && (<div className="text-danger mb-3">Password doesn't match</div>)}</Form.Text>
               <ul className="mb-5">
-                <li className="text-danger">Min 8 charachters</li>
-                <li className="text-danger">At least one upper case</li>
-                <li className="text-danger">At least one lower case</li>
-                <li className="text-danger">At least one number</li>
-                <li className="text-danger">
-                  At least one of the special Characters i.e. @#$%&
+                <li
+                  className={
+                    passwordError.isLengthy ? "text-success" : "text-danger"
+                  }
+                >
+                  Min 8 charachters
+                </li>
+                <li
+                  className={
+                    passwordError.hasUpper ? "text-success" : "text-danger"
+                  }
+                >
+                  At least one upper case
+                </li>
+                <li
+                  className={
+                    passwordError.hasLower ? "text-success" : "text-danger"
+                  }
+                >
+                  At least one lower case
+                </li>
+                <li
+                  className={
+                    passwordError.hasNumber ? "text-success" : "text-danger"
+                  }
+                >
+                  At least one number
+                </li>
+                <li
+                  className={
+                    passwordError.hasSpclChar ? "text-success" : "text-danger"
+                  }
+                >
+                  At least one of the special characters i.e. @#$%&
                 </li>
               </ul>
 
-              <Button variant="primary" type="submit">
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={Object.values(passwordError).includes(false)}
+              >
                 Submit
               </Button>
             </Form>
           </Col>
         </Row>
+        <Row className="py-4">
+        <Col>
+          Already have an account? {''}
+          <a href="/">
+            Log in
+          </a>
+        </Col>
+      </Row>
       </Container>
     </div>
   );

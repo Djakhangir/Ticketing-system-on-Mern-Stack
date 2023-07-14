@@ -7,7 +7,7 @@ export const Registration = () => {
   return (
     <div className="registration-page bg-info">
 
-      <div className="jumbotron m-3">
+      <div className="jumbotron test">
         <RegistrationForm/>
       </div>
     </div>
