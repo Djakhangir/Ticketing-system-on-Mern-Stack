@@ -23,8 +23,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
   useEffect(() => {
-    sessionStorage.getItem("accessJWT")&&
-      history.push("/dashboard");
+    sessionStorage.getItem("accessJWT") && history.push("/dashboard");
   }, [history, isAuth]);
 
   const [email, setemail] = useState("J.atahanov@yahoo.com");
@@ -105,6 +104,14 @@ const LoginForm = ({ loginFormSwitcher }) => {
         <Col>
           <a href="#!" onClick={() => loginFormSwitcher(true)}>
             Forget Password ?
+          </a>
+        </Col>
+      </Row>
+      <Row className="py-4">
+        <Col>
+          Don't have an account? {""}
+          <a href="/registration" >
+            Sign up
           </a>
         </Col>
       </Row>

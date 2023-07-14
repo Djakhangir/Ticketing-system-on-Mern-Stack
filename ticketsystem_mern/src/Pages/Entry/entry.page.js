@@ -17,18 +17,15 @@ const Entry = () => {
   return (
     <div className="entry-page bg-info">
       <div className="jumbotron m-3">
-        {" "}
         {!showresetform ? (
-          <LoginForm
-            loginFormSwitcher={loginFormSwitcher}
-          />
+          <LoginForm loginFormSwitcher={loginFormSwitcher} />
         ) : (
           <PasswordReset
             handleOnResetSubmit={handleOnResetSubmit}
             loginFormSwitcher={loginFormSwitcher}
           />
-        )}{" "}
-      </div>{" "}
+        )}
+      </div>
     </div>
   );
 };
