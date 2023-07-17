@@ -3,6 +3,7 @@ import ticketsReducer from "./Pages/Ticket-List/ticketsSlice";
 import loginReducer from './Components/Login/loginSlice';
 import userReducer from "./Pages/Dashboard/userSlice";
 import newTicketReducer from './Components/AddNewTicketForm/AddTicketSlice';
+import registrationReducer from "./Components/RegistrationForm/RegistrationUserSlice";
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         login: loginReducer,
         user: userReducer,
         openTicket: newTicketReducer,
+        userRegistration: registrationReducer
     },
 });
 
