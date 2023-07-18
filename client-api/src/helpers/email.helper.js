@@ -42,7 +42,10 @@ const send = (emailInfo) => {
 
 //generate email and call send function
 
-const emailProcessor = ({ email, pin, type }) => {
+const emailProcessor = ({ email, pin, type, verificationLink="" }) => {
+
+    //##TODO: Define the email to/from send (SMTP);
+    
     let emailInfo = '';
     switch (type) {
         case "request-new-pass":
@@ -61,18 +64,22 @@ const emailProcessor = ({ email, pin, type }) => {
             send(emailInfo)
             break;
         case 'password-update-success':
+        case 'new-user-confirmation-required':
             emailInfo = {
 
                 from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
                 to: email, // list of receivers
-                subject: "Password updated", // Subject line
-                text: "Your new password has been updated", // plain text body
+                subject: "Please verify your new user", // Subject line
+                text: "Please follow the link to verify your account before you can login", // plain text body
                 html: `<b>Hello </b>
 
-            <p>Your new password has been updated</p>`, // html body
+            <p>Please follow the link to verify your account before you can login</p>
+            <p>${verificationLink}</p>
+            `, // html body
             }
 
-            send(emailInfo)
+            send(emailInfo);
+            break;
         default:
             break;
     }

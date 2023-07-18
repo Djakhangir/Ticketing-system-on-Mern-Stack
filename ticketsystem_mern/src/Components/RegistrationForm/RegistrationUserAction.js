@@ -13,7 +13,7 @@ export const registrationUserAction = (formData) => async (dispatch) => {
     result.status === "success"
       ? dispatch(registrationSuccess(result.message))
       : dispatch(registrationFailed(result.message));
-
+//TODO: fix the error message in backend for new user has already ana ccount
     console.log(result);
     //feedback
     //updates redux store

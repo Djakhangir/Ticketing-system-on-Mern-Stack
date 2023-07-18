@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Row, Button, Form, Spinner, Alert} from "react-bootstrap";
+import {
+  Col,
+  Container,
+  Row,
+  Button,
+  Form,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
 import { registrationUserAction } from "./RegistrationUserAction";
 
 const initialState = {
@@ -24,7 +32,9 @@ const passwordVerification = {
 
 const RegistrationForm = () => {
   const dispatch = useDispatch();
-  const {isLoading, status, message} = useSelector(state => state.userRegistration)
+  const { isLoading, status, message } = useSelector(
+    (state) => state.userRegistration
+  );
   //initial states
   const [newUser, setNewUser] = useState(initialState);
   const [passwordError, setPasswordError] = useState(passwordVerification);
@@ -64,13 +74,22 @@ const RegistrationForm = () => {
   };
 
   //submit the form
-  const handleOnSubmit = e => {
+  const handleOnSubmit = (e) => {
     //prevents on reloading everytime we click the button;
-e.preventDefault();
-console.log(newUser);
+    e.preventDefault();
 
-  dispatch(registrationUserAction(newUser));
-  }
+    const { name, phone, email, company, address, password } = newUser;
+    const newRegistration = {
+      name,
+      phone,
+      email,
+      company,
+      address,
+      password,
+    };
+
+    dispatch(registrationUserAction(newRegistration));
+  };
 
   return (
     <div className="registerForm">
@@ -83,7 +102,11 @@ console.log(newUser);
         <hr />
         <Row>
           <Col>
-          {message && <Alert variant ={status === 'success' ? 'success' : "danger"}>{message}</Alert>}
+            {message && (
+              <Alert variant={status === "success" ? "success" : "danger"}>
+                {message}
+              </Alert>
+            )}
           </Col>
         </Row>
         <Row>
@@ -168,7 +191,11 @@ console.log(newUser);
                   placeholder="Confirm Password"
                 />
               </Form.Group>
-              <Form.Text>{!passwordError.confirmPassword && (<div className="text-danger mb-3">Password doesn't match</div>)}</Form.Text>
+              <Form.Text>
+                {!passwordError.confirmPassword && (
+                  <div className="text-danger mb-3">Password doesn't match</div>
+                )}
+              </Form.Text>
               <ul className="mb-5">
                 <li
                   className={
@@ -214,18 +241,16 @@ console.log(newUser);
               >
                 Submit
               </Button>
-             { isLoading && <Spinner variant="info" animation="border"/>}
+              {isLoading && <Spinner variant="info" animation="border" />}
             </Form>
           </Col>
         </Row>
         <Row className="py-4">
-        <Col>
-          Already have an account? {''}
-          <a href="/">
-            Log in
-          </a>
-        </Col>
-      </Row>
+          <Col>
+            Already have an account? {""}
+            <a href="/">Log in</a>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

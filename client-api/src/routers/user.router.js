@@ -26,8 +26,15 @@ const { emailProcessor } = require("../helpers/email.helper");
 const {
   resetPasswordRequestValidation,
   updatePasswordValidation,
+  newUserValidation,
 } = require("../middlewares/formValidation.middleware");
 const { deleteJWT } = require("../helpers/redis.helper");
+
+//##TODO: provide the link from domain or define the url in environment (url where user redirected after click on link in email)
+const verificationURL = "http://localhost:3000/verification/";
+
+
+
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
 router.all("/", (req, res, next) => {
@@ -50,7 +57,7 @@ router.get("/", userAuthorization, async (req, res) => {
 });
 
 //create new user route
-router.post("/", async (req, res, next) => {
+router.post("/", newUserValidation, async (req, res, next) => {
   const { name, company, email, address, phone, password } = req.body;
   try {
     //hash password
@@ -64,8 +71,19 @@ router.post("/", async (req, res, next) => {
       password: hashPass,
     };
     const result = await insertUser(newUserObj);
+
+    // send the confirmation email
+    await emailProcessor({
+      email,
+      type: "new-user-confirmation-required",
+      verificationLink: verificationURL + result._id,
+    });
+
     res.json({ status: "success", message: "New User Created", result });
   } catch (error) {
+
+    //TODO: fix the error message in backend for new user has already ana ccount
+    
     console.log(error);
     let message =
       "Unable to create new user at the moment, Please try again or contact administration!";
