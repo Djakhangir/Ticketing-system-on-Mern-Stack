@@ -1,0 +1,11 @@
+.userVerification-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box{
+  margin: 5rem !important;
+  padding: 25px;
+}

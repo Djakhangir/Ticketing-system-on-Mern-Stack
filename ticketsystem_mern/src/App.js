@@ -8,8 +8,8 @@ import Dashboard from "./Pages/Dashboard/dashboard.page";
 import AddTicket from "./Pages/New-ticket/AddTicket.page";
 import TicketList from "./Pages/Ticket-List/TicketListing.page";
 import Ticket from "./Pages/Ticket/Ticket.page";
-import {Registration} from "./Pages/Registration/Registration.page";
-
+import { Registration } from "./Pages/Registration/Registration.page";
+import { UserVerification } from "./Pages/User-Verification/UserVerification.page";
 
 function App() {
   return (
@@ -21,6 +21,9 @@ function App() {
           </Route>
           <Route exact path="/registration">
             <Registration />
+          </Route>
+          <Route exact path="/verification/:_id/:email">
+            <UserVerification />
           </Route>
           {/* <DefaultLayout> */}
           <PrivateRoute exact path="/dashboard">

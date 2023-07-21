@@ -41,7 +41,7 @@ const Dashboard = () => {
       </Row>
       <Row>
         <Col className="text-center mb-2">
-          <div> Total Tickets: {totalTickets} </div>{" "}
+          <div> Total Tickets: {totalTickets} </div>
           <div> Pending Tickets: {pendingTickets.length} </div>
         </Col>
       </Row>
@@ -51,7 +51,7 @@ const Dashboard = () => {
       <hr />
       <Row>
         <Col className="recent-ticket">
-          <TicketTable mockTickets={mockTickets} />
+          <TicketTable />
         </Col>
       </Row>
     </Container>

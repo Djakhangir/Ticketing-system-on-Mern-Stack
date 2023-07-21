@@ -9,6 +9,7 @@ const {
   getUserById,
   updatePassword,
   storeUserRefreshJWT,
+  verifyUser,
 } = require("../model/user/User.model");
 
 //password encryption
@@ -28,12 +29,11 @@ const {
   updatePasswordValidation,
   newUserValidation,
 } = require("../middlewares/formValidation.middleware");
+const { verify } = require("jsonwebtoken");
 const { deleteJWT } = require("../helpers/redis.helper");
 
 //##TODO: provide the link from domain or define the url in environment (url where user redirected after click on link in email)
 const verificationURL = "http://localhost:3000/verification/";
-
-
 
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
@@ -56,6 +56,34 @@ router.get("/", userAuthorization, async (req, res) => {
   });
 });
 
+//Verify user after sign up
+router.patch("/verify", async (req, res) => {
+	try {
+		const { _id, email } = req.body;
+		console.log(_id, email);
+
+		const result = await verifyUser(_id, email);
+
+		if (result && result.id) {
+			return res.json({
+				status: "success",
+				message: "You account has been activated, you may sign in now.",
+			});
+		}
+
+		return res.json({
+			status: "error",
+			message: "Invalid request!",
+		});
+	} catch (error) {
+		console.log(error);
+		return res.json({
+			status: "error",
+			message: "Invalid request!",
+		});
+	}
+});
+
 //create new user route
 router.post("/", newUserValidation, async (req, res, next) => {
   const { name, company, email, address, phone, password } = req.body;
@@ -76,24 +104,22 @@ router.post("/", newUserValidation, async (req, res, next) => {
     await emailProcessor({
       email,
       type: "new-user-confirmation-required",
-      verificationLink: verificationURL + result._id,
+      verificationLink: verificationURL + result._id + "/" + email,
     });
 
     res.json({ status: "success", message: "New User Created", result });
   } catch (error) {
-
     //TODO: fix the error message in backend for new user has already ana ccount
-    
+
     console.log(error);
     let message =
       "Unable to create new user at the moment, Please try again or contact administration!";
 
     if (error.message.includes("duplicate key error collection:")) {
-      message = "This email already has an account"
+      message = "This email already has an account";
     }
     res.json({ status: "error", message: error.message });
   }
-//   const result = insertUser(req.body);
 });
 
 // User sign in Routers
@@ -107,6 +133,13 @@ router.post("/login", async (req, res) => {
   ///get user with email from db;
   const user = await getUserByEmail(email);
 
+  if (!user.isVerified) {
+    return res.json({
+      status: "error",
+      message:
+        "Your account has not been verified yet. Please check your email and verify your account before able to login.",
+    });
+  }
   /// get the password from db;
   const passwordFromDb = user && user._id ? user.password : null;
   if (!passwordFromDb)
@@ -129,6 +162,7 @@ router.post("/login", async (req, res) => {
   });
 });
 
+//reset password by requesting new password
 router.post(
   "/reset-password",
   resetPasswordRequestValidation,
@@ -163,6 +197,7 @@ router.post(
   }
 );
 
+//reset password, updated password
 router.patch("/reset-password", updatePasswordValidation, async (req, res) => {
   const { email, pin, newPassword } = req.body;
   const getPin = await getPinByEmailPin(email, pin);

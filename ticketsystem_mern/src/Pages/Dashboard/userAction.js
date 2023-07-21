@@ -6,9 +6,10 @@ export const getUserProfile = () => async (dispatch) => {
     dispatch(getUserPending());
     //call the api;
     const result = await fetchUser();
-    result.user && result.user._id
-      ? dispatch(getUserSuccess(result.user))
-      : dispatch(getUserFail("User is not found"));
+    if (result.user && result.user._id)
+      return dispatch(getUserSuccess(result.user));
+
+    dispatch(getUserFail("User is not found"));
   } catch (error) {
     dispatch(getUserFail(error));
   }

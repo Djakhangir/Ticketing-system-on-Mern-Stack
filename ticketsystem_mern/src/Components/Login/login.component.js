@@ -20,7 +20,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isLoading, isAuth, error } = useSelector((state) => state.login);
+  const { isLoading, isAuth, error } = useSelector(state => state.login);
 
   useEffect(() => {
     sessionStorage.getItem("accessJWT") && history.push("/dashboard");
@@ -53,7 +53,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
     try {
       const isAuth = await userLogin({ email, password });
       if (isAuth.status === "error") {
-        dispatch(loginFail(isAuth.message));
+       return dispatch(loginFail(isAuth.message));
       }
       dispatch(loginSuccess());
       dispatch(getUserProfile());
@@ -109,10 +109,8 @@ const LoginForm = ({ loginFormSwitcher }) => {
       </Row>
       <Row className="py-4">
         <Col>
-          Don't have an account? {""}
-          <a href="/registration" >
-            Sign up
-          </a>
+          Don't have an account? 
+          <a href="/registration">Sign up</a>
         </Col>
       </Row>
     </Container>
