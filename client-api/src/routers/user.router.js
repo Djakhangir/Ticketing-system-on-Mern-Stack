@@ -58,30 +58,31 @@ router.get("/", userAuthorization, async (req, res) => {
 
 //Verify user after sign up
 router.patch("/verify", async (req, res) => {
-	try {
-		const { _id, email } = req.body;
-		console.log(_id, email);
+  try {
+    const { _id, email } = req.body;
 
-		const result = await verifyUser(_id, email);
+    const result = await verifyUser(_id, email);
+    if (result && result.id) {
+      return res.json({
+        status: "success",
+        message: "Your account has been activated, you may sign in now.",
+      });
+    }
 
-		if (result && result.id) {
-			return res.json({
-				status: "success",
-				message: "You account has been activated, you may sign in now.",
-			});
-		}
-
-		return res.json({
-			status: "error",
-			message: "Invalid request!",
-		});
-	} catch (error) {
-		console.log(error);
-		return res.json({
-			status: "error",
-			message: "Invalid request!",
-		});
-	}
+    return res.json({
+      // status: "success",
+      // message: "Your account has been activated, you may sign in now.",
+  // this check for result and result.id?  
+      status: "error",
+      message: "Invalid request, something is wrong!",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      status: "error",
+      message: "Invalid request!",
+    });
+  }
 });
 
 //create new user route
@@ -109,16 +110,16 @@ router.post("/", newUserValidation, async (req, res, next) => {
 
     res.json({ status: "success", message: "New User Created", result });
   } catch (error) {
-    //TODO: fix the error message in backend for new user has already ana ccount
+    //TODO: fix the error message in backend for new user has already an account
 
-    console.log(error);
-    let message =
-      "Unable to create new user at the moment, Please try again or contact administration!";
+    // console.log(error);
+    // const message =
+    //   "Unable to create new user at the moment, Please try again or contact administration!";
 
-    if (error.message.includes("duplicate key error collection:")) {
-      message = "This email already has an account";
-    }
-    res.json({ status: "error", message: error.message });
+    // if (error.message.includes("duplicate key error collection")) {
+    //   const message = "This email already has an account";
+    // }
+    res.json({ status: "error", message});
   }
 });
 

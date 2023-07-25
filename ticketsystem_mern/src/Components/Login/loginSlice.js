@@ -18,7 +18,7 @@ const loginSlice = createSlice({
             state.isAuth = true
             state.error = ''
         },
-        loginFail: (state, payload) => {
+        loginFail: (state, {payload}) => {
             state.isLoading = false
             state.error = payload
         }

@@ -21,7 +21,7 @@ export const UserVerification = () => {
       setResponse(result);
     };
     !response.status && apiCall();
-  }, [data, response]);
+  }, []);
   // call the Api and send the _id to verify user
   return (
     <div className="userVerification-page bg-info">
@@ -29,7 +29,7 @@ export const UserVerification = () => {
         {!response.status && <Spinner variant="info" animation="border" />}
         {response.status && (
           <Alert variant={response.status === "success" ? "success" : "danger"}>
-            {response}
+            {response.message}
           </Alert>
         )}
 

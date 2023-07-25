@@ -13,7 +13,7 @@ import { registrationUserAction } from "./RegistrationUserAction";
 
 const initialState = {
   name: "Jake A",
-  phone: "0000012341",
+  phone: "400000001",
   email: "jake.a.s@gmail.com",
   company: "glosoft",
   address: "2 mindy dr M Nj 08057",

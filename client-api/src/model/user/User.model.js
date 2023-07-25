@@ -91,7 +91,6 @@ const verifyUser = (_id, email) => {
       )
         .then((data) => resolve(data))
         .catch((error) => {
-          console.log(error.message);
           reject(error);
         });
     } catch (error) {
