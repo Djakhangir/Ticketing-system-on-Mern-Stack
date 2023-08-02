@@ -2,15 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
-const PasswordReset = ({ handleonChange, email, handleOnResetSubmit, loginFormSwitcher }) => {
+const PasswordReset = () => {
+
+  const handleOnResetSubmit =(e) => {
+    e.preventDefault();
+  }
   return (
     <Container>
       <Row>
         <Col>
-          <h1 className="text-info text-center"> Reset Password </h1> <hr />
+          <h1 className="text-light text-center"> Reset Password </h1> <hr />
           <Form autoComplete="off" onSubmit={handleOnResetSubmit}>
             <Form.Group>
-              <Form.Label> Email Address </Form.Label>
               <Form.Control
                 onChange={handleonChange}
                 type="email"
@@ -27,7 +30,7 @@ const PasswordReset = ({ handleonChange, email, handleOnResetSubmit, loginFormSw
       </Row>
       <Row>
         <Col>
-          <a href="#!" onClick={()=>loginFormSwitcher(false)}> Login Now </a>
+          <a href="/"> Login Now </a>
         </Col>
       </Row>
     </Container>
@@ -35,10 +38,3 @@ const PasswordReset = ({ handleonChange, email, handleOnResetSubmit, loginFormSw
 };
 
 export default PasswordReset;
-
-PasswordReset.propTypes = {
-  email: PropTypes.string.isRequired,
-  handleonChange: PropTypes.func.isRequired,
-  handleOnResetSubmit: PropTypes.func.isRequired,
-  loginFormSwitcher: PropTypes.func.isRequired,
-};

@@ -9,7 +9,9 @@ import AddTicket from "./Pages/New-ticket/AddTicket.page";
 import TicketList from "./Pages/Ticket-List/TicketListing.page";
 import Ticket from "./Pages/Ticket/Ticket.page";
 import { Registration } from "./Pages/Registration/Registration.page";
+
 import { UserVerification } from "./Pages/User-Verification/UserVerification.page";
+import {PasswordOtpForm} from "./Pages/Password-reset/PasswordOtpForm.page";
 
 function App() {
   return (
@@ -18,6 +20,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Entry />
+          </Route>
+          <Route exact path="/password-reset">
+            <PasswordOtpForm />
           </Route>
           <Route exact path="/registration">
             <Registration />

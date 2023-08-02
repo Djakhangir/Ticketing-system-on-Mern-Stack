@@ -125,7 +125,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
       </Row>
       <Row>
         <Col>
-          <a className="forgetPassBtn" href="#!" onClick={() => loginFormSwitcher(true)}>
+          <a className="forgetPassBtn" href="/password-reset">
             Forget Password ?
           </a>
         </Col>
