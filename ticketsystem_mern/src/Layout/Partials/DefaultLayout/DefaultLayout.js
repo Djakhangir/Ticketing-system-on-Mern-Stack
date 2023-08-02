@@ -1,6 +1,7 @@
 import React from "react";
-import Header from "./Partials/Header.component";
-import Footer from "./Partials/Footer.component";
+import Header from "../Header/Header.component";
+import Footer from "../Footer/Footer.component";
+import "./DefaultLayout.css";
 
 const DefaultLayout = ({ children }) => {
   return (

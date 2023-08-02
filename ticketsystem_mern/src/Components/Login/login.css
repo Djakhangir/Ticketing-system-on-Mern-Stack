@@ -1,0 +1,53 @@
+.form-control {
+  height: 50px;
+  color: white !important;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 40px !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.form-control:focus, input:focus {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: #efdc96 !important;
+  box-shadow: 0 0 0 0.1rem #efdc96 !important;
+}
+
+.form-control::placeholder {
+  color: white !important;
+}
+
+.form-label {
+  color: #fbceb5;
+}
+
+.text {
+  color: white;
+}
+
+.btn.btn-primary {
+  background: #efdc96 !important;
+  border: 1px solid #efdc96 !important;
+  color: #000 !important;
+  width: 100%;
+  border-radius: 40px;
+}
+
+a {
+    color: #FFFDD0 !important;
+    transition: .3s all ease;
+    text-decoration: none !important;
+    font-size: 12px;
+}
+
+.registrationBtnContainer {
+    position: relative;
+    top: -27px;
+    left: 44%;
+    font-size: 12px;
+    color: #fff
+}

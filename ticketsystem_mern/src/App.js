@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Entry from "./Pages/Entry/entry.page";
 import PrivateRoute from "./Components/Private-Route/PrivateRouter.component";
-import DefaultLayout from "./Layout/DefaultLayout";
+import DefaultLayout from "./Layout/Partials/DefaultLayout/DefaultLayout";
 import Dashboard from "./Pages/Dashboard/dashboard.page";
 import AddTicket from "./Pages/New-ticket/AddTicket.page";
 import TicketList from "./Pages/Ticket-List/TicketListing.page";

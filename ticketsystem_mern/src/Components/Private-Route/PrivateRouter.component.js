@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import DefaultLayout from "../../Layout/DefaultLayout";
+import DefaultLayout from "../../Layout/Partials/DefaultLayout/DefaultLayout";
 import { loginSuccess } from "../Login/loginSlice";
 import { fetchNewAccessJWT } from "../../Api/userApi";
 import { getUserProfile } from "../../Pages/Dashboard/userAction";

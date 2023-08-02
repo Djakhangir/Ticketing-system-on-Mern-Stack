@@ -15,7 +15,7 @@ const Entry = () => {
   };
 
   return (
-    <div className="entry-page bg-info">
+    <div className="entry-page bg-info loginPage">
       <div className="jumbotron m-3">
         {!showresetform ? (
           <LoginForm loginFormSwitcher={loginFormSwitcher} />

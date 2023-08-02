@@ -1,7 +1,11 @@
-.default-layout {
+/* .default-layout {
     display: grid;
     grid-template-rows: 80px auto 3rem;
     grid-template-areas: "header" "main" "footer"
+} */
+
+* {
+    font-family: "Lato", Arial, sans-serif;
 }
 
 header {
@@ -21,9 +25,13 @@ footer {
 }
 
 .jumbotron {
-    background-color: #e9ecef;
-    border-radius: .3rem;
+    background-color: rgba(204, 204, 204, 0.05);
+    border-radius: 3rem;
     box-shadow: 0px 0px 15px -5px black;
     margin-bottom: 2rem;
     padding: 3rem 2rem;
+    -webkit-border-radius: 3rem;
+    -moz-border-radius: 3rem;
+    -ms-border-radius: 3rem;
+    -o-border-radius: 3rem;
 }

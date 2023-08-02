@@ -6,6 +6,7 @@ import TicketTable from "../../Components/Ticket-table/TicketTable.component";
 import PageBreadcrumb from "../../Components/Breadcrumb/PageBreadcrumb.component";
 import mockTickets from "../../Assets/data/mock-data.json";
 import { fetchAllTickets } from "../Ticket-List/ticketsAction";
+import './dashboard.style.css'
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const Dashboard = () => {
   const totalTickets = tickets.length;
 
   return (
-    <Container>
+    <Container className="dashboard">
       <Row>
         <Col>
           <PageBreadcrumb pageName="Dashboard" />

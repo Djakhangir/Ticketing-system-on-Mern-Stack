@@ -8,19 +8,24 @@ import {
   Button,
   Spinner,
   Alert,
+  InputGroup,
 } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 import { loginPending, loginSuccess, loginFail } from "./loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUserProfile } from "../../Pages/Dashboard/userAction";
 
 import { userLogin } from "../../Api/userApi";
+import "./login.css";
 
 const LoginForm = ({ loginFormSwitcher }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isLoading, isAuth, error } = useSelector(state => state.login);
+  const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
   useEffect(() => {
     sessionStorage.getItem("accessJWT") && history.push("/dashboard");
@@ -28,6 +33,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
 
   const [email, setemail] = useState("J.atahanov@yahoo.com");
   const [password, setpassword] = useState("passwordTest");
+  const [eye, setEye] = useState(false);
 
   const handleonChange = (e) => {
     const { name, value } = e.target;
@@ -53,7 +59,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
     try {
       const isAuth = await userLogin({ email, password });
       if (isAuth.status === "error") {
-       return dispatch(loginFail(isAuth.message));
+        return dispatch(loginFail(isAuth.message));
       }
       dispatch(loginSuccess());
       dispatch(getUserProfile());
@@ -64,16 +70,20 @@ const LoginForm = ({ loginFormSwitcher }) => {
     }
   };
 
+  const handleTheEye = () => {
+    setEye(!eye);
+  };
+
   return (
-    <Container>
+    <Container className="login-container">
       <Row>
         <Col>
-          <h1 className="text-info text-center"> Tenant Login </h1> <hr />
+          <h1 className="text text-center"> Have an account? </h1> <hr />
           {error && <Alert variant="danger">{error}</Alert>}
           <Form autoComplete="off" onSubmit={handleOnSubmit}>
-            <Form.Group>
-              <Form.Label> Email Address </Form.Label>
+            <Form.Group className="mt-3">
               <Form.Control
+                size="sm"
                 onChange={handleonChange}
                 type="email"
                 name="email"
@@ -82,17 +92,30 @@ const LoginForm = ({ loginFormSwitcher }) => {
                 required
               ></Form.Control>
             </Form.Group>
-            <Form.Group>
-              <Form.Label> Password </Form.Label>
+            <br />
+            <InputGroup>
               <Form.Control
-                type="password"
+                size="sm"
+                type={eye ? "text" : "password"}
                 name="password"
                 value={password}
                 placeholder="Password"
                 onChange={handleonChange}
                 required
               ></Form.Control>
-            </Form.Group>
+              <FontAwesomeIcon
+                onClick={handleTheEye}
+                icon={!eye ? faEyeSlash : faEye}
+                style={{
+                  cursor: "pointer",
+                  zIndex: "999",
+                  position: "absolute",
+                  left: "90%",
+                  top: "16px",
+                }}
+              />
+            </InputGroup>
+
             <br />
             <Button type="submit"> Login </Button>
             {isLoading && <Spinner variant="primary" animation="border" />}
@@ -102,15 +125,15 @@ const LoginForm = ({ loginFormSwitcher }) => {
       </Row>
       <Row>
         <Col>
-          <a href="#!" onClick={() => loginFormSwitcher(true)}>
+          <a className="forgetPassBtn" href="#!" onClick={() => loginFormSwitcher(true)}>
             Forget Password ?
           </a>
         </Col>
       </Row>
-      <Row className="py-4">
+      <Row className="py-2">
         <Col>
-          Don't have an account? 
-          <a href="/registration">Sign up</a>
+          <p  className="registrationBtnContainer">Don't have an account?
+          <a className="registrationBtn" href="/registration"> Sign up</a> </p>
         </Col>
       </Row>
     </Container>

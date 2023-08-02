@@ -1,0 +1,13 @@
+.container{
+    /* background-size: 100% 100%; */
+    width: 100%;
+}
+
+.dashboard {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('../../Assets/img/point3d-commercial-imaging-ltd-5mnk7JsADZk-unsplash.jpg');
+    background-color: transparent;
+    
+}
+
