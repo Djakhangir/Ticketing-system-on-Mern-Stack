@@ -180,23 +180,16 @@ router.post(
       await emailProcessor({
         email,
         pin: setPin.pin,
-        type: "request-new-pass",
-      });
-
-      return res.json({
-        status: "success",
-        message:
-          "If the email exist in our database, the password reset pin will be sent shortly",
+        type: "request-new-password",
       });
     }
 
     res.json({
-      status: "error",
+      status: "success",
       message:
         "If the email exist in our database, the password reset pin will be sent shortly",
     });
-  }
-);
+  });
 
 //reset password, updated password
 router.patch("/reset-password", updatePasswordValidation, async (req, res) => {

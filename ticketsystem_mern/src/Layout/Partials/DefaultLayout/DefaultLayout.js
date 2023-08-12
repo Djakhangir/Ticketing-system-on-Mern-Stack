@@ -1,17 +1,17 @@
 import React from "react";
-import Header from "../Header/Header.component";
-import Footer from "../Footer/Footer.component";
+import { Headers } from "../Header/Header.component";
+import { Footers } from "../Footer/Footer.component";
 import "./DefaultLayout.css";
 
 const DefaultLayout = ({ children }) => {
   return (
     <div className="default-layout">
       <header className="header mb-2">
-        <Header />
+        <Headers />
       </header>
       <main className="main"> {children} </main>
       <footer className="footer">
-        <Footer />
+        <Footers />
       </footer>
     </div>
   );

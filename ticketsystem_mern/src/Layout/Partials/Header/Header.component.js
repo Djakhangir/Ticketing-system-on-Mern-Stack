@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { userLogout } from "../../../Api/userApi";
 import "./Header.css";
 
-const Header = () => {
+export const Headers = () => {
   const history = useHistory();
 
   const logMeOut = () => {
@@ -39,5 +39,3 @@ const Header = () => {
     </Navbar>
   );
 };
-
-export default Header;

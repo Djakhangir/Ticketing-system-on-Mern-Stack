@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./PasswordOtpForm.page.css";
 import PasswordReset from "../../Components/Password_Reset/PasswordReset.component";
 

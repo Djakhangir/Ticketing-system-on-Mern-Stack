@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const rootUrl = "http://localhost:3001/v1/";
-const otpRequestUrl = rootUrl + "/use/reset-password";
+const otpRequestUrl = rootUrl + "user/reset-password";
 
 export const requestPasswordOtp = (email) => {
   return new Promise(async (resolve, reject) => {
@@ -12,7 +12,7 @@ export const requestPasswordOtp = (email) => {
         resolve(data)
       
     } catch (error) {
-      reject({status: "error", message: error.message});
+      reject(error);
     }
   });
 };

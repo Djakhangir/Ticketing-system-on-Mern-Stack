@@ -11,7 +11,7 @@ import Ticket from "./Pages/Ticket/Ticket.page";
 import { Registration } from "./Pages/Registration/Registration.page";
 
 import { UserVerification } from "./Pages/User-Verification/UserVerification.page";
-import {PasswordOtpForm} from "./Pages/Password-reset/PasswordOtpForm.page";
+import { PasswordOtpForm } from "./Pages/Password-reset/PasswordOtpForm.page";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/verification/:_id/:email">
             <UserVerification />
           </Route>
-          {/* <DefaultLayout> */}
+          {/* /* <DefaultLayout> */ }
           <PrivateRoute exact path="/dashboard">
             <Dashboard />
           </PrivateRoute>

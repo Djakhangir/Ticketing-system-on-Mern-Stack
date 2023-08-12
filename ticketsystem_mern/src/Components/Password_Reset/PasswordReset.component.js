@@ -1,17 +1,44 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
+import { sendPasswordResetOtp } from "./PasswordAction";
 
 const PasswordReset = () => {
+  const dispatch = useDispatch();
+  const { isLoading, status, message } = useSelector((state) => state.password);
+  const [email, setEmail] = useState("");
 
-  const handleOnResetSubmit =(e) => {
+  const handleOnResetSubmit = (e) => {
     e.preventDefault();
-  }
+    dispatch(sendPasswordResetOtp(email));
+  };
+
+  const handleonChange = (e) => {
+    const { name, value } = e.target;
+    setEmail(value);
+  };
+
   return (
     <Container>
       <Row>
         <Col>
           <h1 className="text-light text-center"> Reset Password </h1> <hr />
+          {message && (
+            <Alert variant={status === "success" ? "success" : "danger"}>
+              {message}
+            </Alert>
+          )}
+          {isLoading && (
+            <Spinner variant="primary" animation="border"></Spinner>
+          )}
           <Form autoComplete="off" onSubmit={handleOnResetSubmit}>
             <Form.Group>
               <Form.Control
@@ -22,8 +49,9 @@ const PasswordReset = () => {
                 placeholder="Enter Email"
                 required
               ></Form.Control>
-            </Form.Group><br/>
-            <Button type="submit" > Reset Password </Button>
+            </Form.Group>
+            <br />
+            <Button type="submit"> Reset Password </Button>
           </Form>
           <hr />
         </Col>
