@@ -6,7 +6,7 @@ const otpRequestUrl = rootUrl + "user/reset-password";
 export const requestPasswordOtp = (email) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const data = await axios.post(otpRequestUrl, { email });
+      const {data} = await axios.post(otpRequestUrl, { email });
 
       console.log(data)
         resolve(data)

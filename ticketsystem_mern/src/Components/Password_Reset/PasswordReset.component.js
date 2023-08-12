@@ -11,6 +11,9 @@ import {
 } from "react-bootstrap";
 import { sendPasswordResetOtp } from "./PasswordAction";
 
+
+// ###TODO: error message and alerts does not work properly since there is some bug to be found
+
 const PasswordReset = () => {
   const dispatch = useDispatch();
   const { isLoading, status, message } = useSelector((state) => state.password);

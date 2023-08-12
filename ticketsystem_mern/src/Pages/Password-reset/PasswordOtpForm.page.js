@@ -14,7 +14,7 @@ import PasswordReset from "../../Components/Password_Reset/PasswordReset.compone
 //Add reducer through Redux-toolkit to handle the network staus and pride
 //Send email otp and new password to update the password
 
-export const PasswordOtpForm = () => {
+const PasswordOtpForm = () => {
 
   const loginFormSwitcher = (formType) => {
     // setshowresetform(formType);
@@ -28,3 +28,5 @@ export const PasswordOtpForm = () => {
     </div>
   );
 };
+
+export default PasswordOtpForm;
