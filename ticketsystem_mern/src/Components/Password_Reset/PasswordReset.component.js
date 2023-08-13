@@ -59,11 +59,6 @@ const PasswordReset = () => {
           <hr />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <a href="/"> Login Now </a>
-        </Col>
-      </Row>
     </Container>
   );
 };

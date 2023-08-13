@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "./PasswordOtpForm.page.css";
 import PasswordReset from "../../Components/Password_Reset/PasswordReset.component";
+import UpdatePasswordForm from "../../Components/Password_Reset/UpdatePasswordForm.comp";
 
 //WorkFlow
 
@@ -15,16 +17,17 @@ import PasswordReset from "../../Components/Password_Reset/PasswordReset.compone
 //Send email otp and new password to update the password
 
 const PasswordOtpForm = () => {
-
-  const loginFormSwitcher = (formType) => {
-    // setshowresetform(formType);
-  };
+  const { displayPassResetForm } = useSelector((state) => state.password);
 
   return (
     <div className="password-reset bg-info">
       <div className="jumbotron m-3">
-        <PasswordReset />
+        {displayPassResetForm ? <UpdatePasswordForm /> : <PasswordReset />}
+        <div className="text-center">
+        <a href="/"> Login Now </a>
+        </div>
       </div>
+          
     </div>
   );
 };

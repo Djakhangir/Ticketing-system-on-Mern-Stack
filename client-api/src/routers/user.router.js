@@ -187,7 +187,7 @@ router.post(
     res.json({
       status: "success",
       message:
-        "If the email exist in our database, the password reset pin will be sent shortly",
+        "The password reset pin will be sent shortly, if we have your email in our database",
     });
   });
 
