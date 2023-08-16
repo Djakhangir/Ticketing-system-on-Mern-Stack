@@ -4,7 +4,8 @@ const initialState = {
   isLoading: false,
   status: "",
   message: "",
-  displayPassResetForm: false
+  displayPassResetForm: false,
+  email: ""
 };
 
 const passwordReset = createSlice({
@@ -18,6 +19,7 @@ const passwordReset = createSlice({
       state.isLoading = false;
       state.status = "success";
       state.message = payload.message;
+      state.email = payload.email;
       state.displayPassResetForm = true;
     },
     otpReqFail: (state, { payload }) => {

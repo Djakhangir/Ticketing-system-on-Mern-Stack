@@ -11,7 +11,6 @@ import {
 } from "react-bootstrap";
 import { sendPasswordResetOtp } from "./PasswordAction";
 
-
 // ###TODO: error message and alerts does not work properly since there is some bug to be found
 
 const PasswordReset = () => {
@@ -21,11 +20,12 @@ const PasswordReset = () => {
 
   const handleOnResetSubmit = (e) => {
     e.preventDefault();
+
     dispatch(sendPasswordResetOtp(email));
   };
 
   const handleonChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setEmail(value);
   };
 

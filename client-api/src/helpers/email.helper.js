@@ -48,7 +48,7 @@ const emailProcessor = ({ email, pin, type, verificationLink="" }) => {
     
     let emailInfo = '';
     switch (type) {
-        case "request-new-pass":
+        case "request-new-password":
             emailInfo = {
 
                 from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address

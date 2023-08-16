@@ -175,7 +175,7 @@ router.post(
     if (user && user._id) {
       //generate the random pin
       const setPin = await setPasswordResetPin(email);
-
+console.log(setPin);   
       //generate and send email to the client with pin to reset password
       await emailProcessor({
         email,
@@ -196,7 +196,7 @@ router.patch("/reset-password", updatePasswordValidation, async (req, res) => {
   const { email, pin, newPassword } = req.body;
   const getPin = await getPinByEmailPin(email, pin);
 
-  if (getPin._id) {
+  if (getPin?._id) {
     const dbDate = getPin.addedAt;
     const expiresIn = 1;
     let expDate = dbDate.setDate(dbDate.getDate() + expiresIn);

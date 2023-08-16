@@ -11,7 +11,7 @@ const shortStr = Joi.string().min(2).max(50);
 const longStr = Joi.string().min(2).max(1000);
 const dt = Joi.date();
 
-const newPassword = Joi.string().alphanum().min(3).max(30).required();
+const newPassword = Joi.string().min(3).max(30).required();
 
 const resetPasswordRequestValidation = (req, res, next) => {
   const schema = Joi.object({ email });

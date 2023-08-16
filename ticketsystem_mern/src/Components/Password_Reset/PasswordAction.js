@@ -7,6 +7,7 @@ export const sendPasswordResetOtp = (email) => async dispatch => {
     const { status, message } = await requestPasswordOtp(email);
 
     if (status === "success") {
+      // console.log({message, email})
       return dispatch(otpReqSuccess({ message, email }));
     } 
       dispatch(otpReqFail(message));

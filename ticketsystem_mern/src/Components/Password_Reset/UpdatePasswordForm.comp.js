@@ -28,7 +28,7 @@ const passwordVerification = {
 
 const UpdatePasswordForm = () => {
   const dispatch = useDispatch();
-  const { isLoading, status, message, displayPassResetForm } = useSelector(
+  const { isLoading, status, message, email } = useSelector(
     (state) => state.password
   );
   //initial states
@@ -73,8 +73,8 @@ const UpdatePasswordForm = () => {
     const { pin, password } = newPassword;
     const newPasswordObj = {
       pin,
-      password,
-      // email,
+      newPassword: password,
+      email,
     };
     console.log(pin, password);
     dispatch(updatePassword(newPasswordObj));
