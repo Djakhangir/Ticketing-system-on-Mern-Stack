@@ -59,7 +59,7 @@ const AddNewTicketForm = () => {
 
   return (
     <div className="jumbotron add-new-ticket mt-3">
-      <h1 className="text-info text-center">Add New Ticket</h1>
+      <h1 className="text-dark text-center">Add New Ticket</h1>
       <hr />
       <div>
         {error && <Alert variant="danger">{error}</Alert>}
@@ -68,7 +68,7 @@ const AddNewTicketForm = () => {
       </div>
       <Form autoComplete="off" onSubmit={handleOnSubmit}>
         <Form.Group as={Row}>
-          <Form.Label column sm={3}>
+          <Form.Label className="add-new-ticket-label" column sm={3}>
             Subject
           </Form.Label>
           <Col sm={9}>
@@ -84,16 +84,19 @@ const AddNewTicketForm = () => {
             </Form.Text>
           </Col>
         </Form.Group>
+        <br/>
         <Form.Group as={Row}>
           <Form.Label column sm={3}>
             Issue Created
           </Form.Label>
-          <Col sm={9}>
+          
+          <Col sm={5}>
             <Form.Control
               type="date"
               name="issueDate"
               onChange={handleOnChange}
               value={formData.issueDate}
+              placeholder="MM/DD/YYYY"
               required
             ></Form.Control>
           </Col>
@@ -110,7 +113,7 @@ const AddNewTicketForm = () => {
           ></Form.Control>
         </Form.Group>
         <br />
-        <Button type="submit" variant="info" block="true">
+        <Button type="submit" variant="secondary" block="true">
           Open Ticket
         </Button>
       </Form>

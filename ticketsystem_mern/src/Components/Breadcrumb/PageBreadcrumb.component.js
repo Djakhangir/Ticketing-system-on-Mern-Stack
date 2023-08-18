@@ -1,6 +1,7 @@
 import React from "react";
 import { Breadcrumb } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
+import "./PageBreadcrumb.style.css";
 
 const PageBreadcrumb = ({ pageName }) => {
   return (

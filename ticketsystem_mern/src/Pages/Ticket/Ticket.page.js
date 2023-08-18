@@ -8,6 +8,7 @@ import UpdateTicket from "../../Components/UpdateTicket/UpdateTicket.component";
 import { useParams } from "react-router-dom";
 import { fetchTicket, closeTicket } from "../Ticket-List/ticketsAction";
 import { resetResponseMsg } from "../Ticket-List/ticketsSlice";
+import './Ticket.page.style.css';
 
 // const ticket = tickets[0];
 const Ticket = () => {
@@ -28,7 +29,7 @@ const Ticket = () => {
   }, [tId, dispatch, replyTicketError, replyMsg]);
 
   return (
-    <Container>
+    <Container className="ticket-container">
       <Row>
         <Col>
           <PageBreadcrumb pageName="Ticket" />
@@ -43,18 +44,19 @@ const Ticket = () => {
         </Col>
       </Row>
       <Row>
-        <Col className="text-weight-bolder text-secondary">
-          <div className="subject"> Subject: {selectedTicket.subject} </div>
-          <div className="date">
-            Ticket Opened:
-            {selectedTicket.openAt &&
+        <Col className="text-weight-bolder text-dark ">
+          <div className="subject"> <span className="header">Subject: </span> {selectedTicket.subject} </div>
+          <div className="date"><span className="header">
+            Ticket Opened: </span>
+            { selectedTicket.openAt &&
               new Date(selectedTicket.openAt).toLocaleString()}
           </div>
-          <div className="status"> Status: {selectedTicket.status} </div>
+          <div className="status"><span className="header"> Status: </span> {selectedTicket.status} </div>
         </Col>
         <Col className="text-right">
           <Button
-            variant="outline-info"
+            variant="dark"
+            className="close-ticket-btn"
             onClick={() => dispatch(closeTicket(tId))}
             disabled={selectedTicket.status === "Closed"}
           >

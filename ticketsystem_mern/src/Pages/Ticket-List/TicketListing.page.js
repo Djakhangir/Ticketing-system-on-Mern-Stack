@@ -24,7 +24,7 @@ const TicketList = () => {
       <Row className="mt-4">
         <Col>
           <Link to="/add-ticket">
-            <Button variant="info"> Add New Ticket </Button>
+            <Button variant="secondary"> Add New Ticket </Button>
           </Link>
         </Col>
         <Col className="text-right">

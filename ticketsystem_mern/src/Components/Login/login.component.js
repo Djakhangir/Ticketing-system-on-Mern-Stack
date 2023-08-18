@@ -27,13 +27,16 @@ const LoginForm = ({ loginFormSwitcher }) => {
 
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
+
+  const [email, setemail] = useState("J.atahanov@yahoo.com");
+  const [password, setpassword] = useState("");
+  const [eye, setEye] = useState(false);
+  const [zoomedIn, setzoomedIn] = useState(false)
+
   useEffect(() => {
     sessionStorage.getItem("accessJWT") && history.push("/dashboard");
   }, [history, isAuth]);
 
-  const [email, setemail] = useState("J.atahanov@yahoo.com");
-  const [password, setpassword] = useState("passwordTest");
-  const [eye, setEye] = useState(false);
 
   const handleonChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +64,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
       if (isAuth.status === "error") {
         return dispatch(loginFail(isAuth.message));
       }
+      setzoomedIn(true)
       dispatch(loginSuccess());
       dispatch(getUserProfile());
       history.push("/dashboard");

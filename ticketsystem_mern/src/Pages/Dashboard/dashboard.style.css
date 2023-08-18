@@ -1,13 +1,28 @@
 .container{
-    /* background-size: 100% 100%; */
-    width: 100%;
+    background-size: 100% 100%;
+    /* width: 100%; */
 }
 
 .dashboard {
     height: 100vh;
-    width: 100vw;
-    background-image: url('../../Assets/img/point3d-commercial-imaging-ltd-5mnk7JsADZk-unsplash.jpg');
+    /* width: 100vw; */
+    background-image: url('../../Assets/img/dashboard.jpg');
     background-color: transparent;
+    /* background: url('../../Assets/img/point3d-commercial-imaging-ltd-5mnk7JsADZk-unsplash.jpg') no-repeat center center / cover; */
     
+}
+
+/* .breadcrumb-item.active a {
+    color: black;
+
+}
+
+.breadcrumb-item.active {
+    color: black;
+
+} */
+
+.button {
+    font-weight: 800;
 }
 

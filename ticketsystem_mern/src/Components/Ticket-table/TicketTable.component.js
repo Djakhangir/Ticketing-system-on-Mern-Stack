@@ -15,9 +15,9 @@ const TicketTable = () => {
     return <h3>{error}</h3>;
   }
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
-        <tr>
+        <tr >
           <th>#</th> 
           <th>Subject</th>
           <th>Status</th>
@@ -28,10 +28,12 @@ const TicketTable = () => {
         {searchTicketList.length ? (
           searchTicketList.map((el) => (
             <tr key={el._id}>
+              {/* ###TODO: ID ROW IS TOO BIG  */}
               <td>{el._id}</td>
               <td>
-                <Link to={`/ticket/${el._id}`}>{el.subject}</Link>
+                <Link style={{ color:"black", fontWeight:"600", textDecoration:"none"}} to={`/ticket/${el._id}`}>{el.subject}</Link>
               </td>
+              {/* ###TODO: MAKE THE TEST ON STATUS BE COLORFUL DOTS */}
               <td>{el.status}</td>
               <td>{el.openAt && new Date(el.openAt).toLocaleString()}</td>
             </tr>

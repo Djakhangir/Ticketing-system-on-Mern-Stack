@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Button } from "react-bootstrap";
 import { replyOnTicket } from "../../Pages/Ticket-List/ticketsAction";
+import './UpdateTicket.style.css';
 
 const UpdateTicket = ({ _id }) => {
   const {
@@ -27,7 +28,7 @@ const UpdateTicket = ({ _id }) => {
     <div>
       <Form onSubmit={handleOnSubmit}>
         <Form.Label>Reply</Form.Label>
-        <Form.Text>Please reply here or update the ticket</Form.Text>
+        {/* <Form.Text>Please reply here or update the ticket</Form.Text> */}
         <Form.Control
           as="textarea"
           row="5"
@@ -36,8 +37,8 @@ const UpdateTicket = ({ _id }) => {
           onChange={handleOnChange}
         />
         <div className="text-right mt-3 mb-3">
-          <Button variant="info" type="submit">
-            Reply
+          <Button variant="outline-secondary" type="submit">
+            Submit
           </Button>
         </div>
       </Form>

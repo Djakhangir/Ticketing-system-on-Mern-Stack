@@ -22,7 +22,8 @@ const Dashboard = () => {
   const totalTickets = tickets.length;
 
   return (
-    <Container className="dashboard">
+    <Container className="dashboard"  fluid bg="dark"  expand="md">
+      {/* fixed data-bs-theme="dark" */}
       <Row>
         <Col>
           <PageBreadcrumb pageName="Dashboard" />
@@ -32,8 +33,8 @@ const Dashboard = () => {
         <Col className="text-center mt-5 mb-2">
           <Link to="/add-ticket">
             <Button
-              variant="info"
-              style={{ fontSize: "2rem", padding: "10px 30px" }}
+              variant="light"
+              style={{ fontSize: "2rem", padding: "10px 30px"}}
             >
               Add New Ticket
             </Button>

@@ -1,0 +1,10 @@
+.form-label {
+    margin-left: 12px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.btn.btn-outline-secondary {
+    float: right;
+    margin-bottom: 15px;
+}

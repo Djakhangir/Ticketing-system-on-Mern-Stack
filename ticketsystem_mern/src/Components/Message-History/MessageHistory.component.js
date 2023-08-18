@@ -10,7 +10,7 @@ const MessageHistory = ({ msg }) => {
       <div className="send forn-weight-bold text-secondary">
         <div className="sender">{el.sender}</div>
         <div className="date">
-          {el.msgAt && new Date(el.msgAt).toLocaleString()}
+          {el.msgAt && new Date(el.msgAt).toLocaleDateString().toLowerCase()}
         </div>
       </div>
       <div className="message">{el.message}</div>

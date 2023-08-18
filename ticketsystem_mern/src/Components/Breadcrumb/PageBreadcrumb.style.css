@@ -1,0 +1,10 @@
+.breadcrumb-item.active {
+color: black
+}
+
+.breadcrumb-item.active a{
+    color: black
+    }
+
+
+
