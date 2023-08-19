@@ -21,7 +21,7 @@ import { getUserProfile } from "../../Pages/Dashboard/userAction";
 import { userLogin } from "../../Api/userApi";
 import "./login.css";
 
-const LoginForm = ({ loginFormSwitcher }) => {
+const LoginForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -29,7 +29,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
 
 
   const [email, setemail] = useState("J.atahanov@yahoo.com");
-  const [password, setpassword] = useState("");
+  const [password, setpassword] = useState("12345678As@1");
   const [eye, setEye] = useState(false);
   const [zoomedIn, setzoomedIn] = useState(false)
 
@@ -87,6 +87,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
           <Form autoComplete="off" onSubmit={handleOnSubmit}>
             <Form.Group className="mt-3">
               <Form.Control
+              
                 size="sm"
                 onChange={handleonChange}
                 type="email"
@@ -99,6 +100,7 @@ const LoginForm = ({ loginFormSwitcher }) => {
             <br />
             <InputGroup>
               <Form.Control
+              
                 size="sm"
                 type={eye ? "text" : "password"}
                 name="password"
@@ -127,17 +129,17 @@ const LoginForm = ({ loginFormSwitcher }) => {
           <hr />
         </Col>
       </Row>
-      <Row>
-        <Col>
+      <Row className="py-1">
+        <Col >
           <a className="forgetPassBtn" href="/password-reset">
-            Forget Password ?
+            Forgot Password ?
           </a>
         </Col>
       </Row>
-      <Row className="py-2">
+      <Row >
         <Col>
           <p  className="registrationBtnContainer">Don't have an account?
-          <a className="registrationBtn" href="/registration"> Sign up</a> </p>
+          <a className="registrationBtn" href="/registration"> SIGN UP</a> </p>
         </Col>
       </Row>
     </Container>

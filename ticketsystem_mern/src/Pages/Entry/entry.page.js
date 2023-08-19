@@ -27,10 +27,10 @@ const Entry = () => {
   };
 
   return (
-    <div className="entry-page bg-info loginPage">
+    <div className="entry-page">
       <div className="jumbotron m-3">
         {!showresetform ? (
-          <LoginForm loginFormSwitcher={loginFormSwitcher} />
+          <LoginForm/>
         ) : (
           <PasswordReset
             handleOnResetSubmit={handleOnResetSubmit}

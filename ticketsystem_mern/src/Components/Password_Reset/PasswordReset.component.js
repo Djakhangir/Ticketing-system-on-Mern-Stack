@@ -30,10 +30,14 @@ const PasswordReset = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <h1 className="text-light text-center"> Reset Password </h1> <hr />
+    <Container className="forgot-password-container">
+      <Row className="justify-content-center align-items-center">
+        <Col > 
+        {/* xs={10} sm={8} md={6} lg={4} */}
+          <h1 className="text-light text-center"> Forgot your password? </h1> 
+          <p className="text-warning">
+              Don't worry, we've got you covered. Enter your email to reset your password.
+            </p><hr />
           {message && (
             <Alert variant={status === "success" ? "success" : "danger"}>
               {message}
@@ -43,18 +47,18 @@ const PasswordReset = () => {
             <Spinner variant="primary" animation="border"></Spinner>
           )}
           <Form autoComplete="off" onSubmit={handleOnResetSubmit}>
-            <Form.Group>
+            <Form.Group controlId="email">
               <Form.Control
                 onChange={handleonChange}
                 type="email"
                 name="email"
                 value={email}
-                placeholder="Enter Email"
+                placeholder="Enter your email"
                 required
               ></Form.Control>
             </Form.Group>
             <br />
-            <Button type="submit"> Reset Password </Button>
+            <Button variant="primary" type="submit" className="btn-block"> Reset Password </Button>
           </Form>
           <hr />
         </Col>

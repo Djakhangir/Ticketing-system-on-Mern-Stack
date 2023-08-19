@@ -12,11 +12,18 @@
     box-shadow: 0 0 0 0.1rem #212529 !important;
   }
 
-  .form-control::placeholder,
-  .form-control[name="issueDate"] ,
+  .form-control[name="issueDate"],
   .form-control[name="message"] 
   {
     color: #212529 !important;
+  }
+
+  .form-control[name="issueDate"]::placeholder,
+  .form-control[name="message"]::placeholder,
+  .form-control[name="subject"]::placeholder 
+  {
+    color: #212529 !important;
+    font-weight:300
   }
 
   .form-control[name="message"] {

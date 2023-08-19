@@ -20,11 +20,11 @@ const PasswordOtpForm = () => {
   const { displayPassResetForm } = useSelector((state) => state.password);
 
   return (
-    <div className="password-reset bg-info">
+    <div className="password-reset">
       <div className="jumbotron m-3">
         {displayPassResetForm ? <UpdatePasswordForm /> : <PasswordReset />}
         <div className="text-center">
-        <a href="/"> Login Now </a>
+        <a className="loginBtn" href="/"> Login Now </a>
         </div>
       </div>
           
