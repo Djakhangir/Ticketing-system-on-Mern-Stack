@@ -87,7 +87,7 @@ const LoginForm = () => {
           <Form autoComplete="off" onSubmit={handleOnSubmit}>
             <Form.Group className="mt-3">
               <Form.Control
-              
+              className="login-email"
                 size="sm"
                 onChange={handleonChange}
                 type="email"
@@ -100,7 +100,7 @@ const LoginForm = () => {
             <br />
             <InputGroup>
               <Form.Control
-              
+              className="login-password"
                 size="sm"
                 type={eye ? "text" : "password"}
                 name="password"

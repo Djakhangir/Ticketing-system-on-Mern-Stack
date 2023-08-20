@@ -66,13 +66,14 @@ const AddNewTicketForm = () => {
         {successMsg && <Alert variant="primary">{successMsg}</Alert>}
         {isLoading && <Spinner variant="primary" animation="border"/>}
       </div>
-      <Form autoComplete="off" onSubmit={handleOnSubmit}>
+      <Form autoComplete="off" onSubmit={handleOnSubmit} className="add-new-ticket-form">
         <Form.Group as={Row}>
           <Form.Label className="add-new-ticket-label" column sm={3}>
             Subject
           </Form.Label>
           <Col sm={9}>
             <Form.Control
+            className="add-new-ticket-subject"
               name="subject"
               onChange={handleOnChange}
               placeholder="Subject"
@@ -92,6 +93,7 @@ const AddNewTicketForm = () => {
           
           <Col sm={5}>
             <Form.Control
+            className="add-new-ticket-issueDate"
               type="date"
               name="issueDate"
               onChange={handleOnChange}
@@ -104,6 +106,7 @@ const AddNewTicketForm = () => {
         <Form.Group>
           <Form.Label> Details </Form.Label>
           <Form.Control
+          className="add-new-ticket-message"
             as="textarea"
             name="message"
             onChange={handleOnChange}

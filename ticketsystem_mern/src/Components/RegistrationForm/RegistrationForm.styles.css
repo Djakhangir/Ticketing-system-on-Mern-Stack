@@ -1,0 +1,54 @@
+.registerForm {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10%;
+  -webkit-border-radius: 10%;
+  -moz-border-radius: 10%;
+  -ms-border-radius: 10%;
+  -o-border-radius: 10%;
+}
+
+.registration-name.form-control::placeholder,
+.registration-phone.form-control::placeholder,
+.registration-email.form-control::placeholder,
+.registration-company.form-control::placeholder,
+.registration-address.form-control::placeholder,
+.registration-password.form-control::placeholder,
+.registration-confirmPassword.form-control::placeholder
+ {
+    color: #a9a9a9 !important;
+    font-weight: 400;
+
+}
+
+.registration-name.form-control,
+.registration-phone.form-control,
+.registration-email.form-control,
+.registration-company.form-control,
+.registration-address.form-control,
+.registration-password.form-control,
+.registration-confirmPassword.form-control
+ {   color: #212529 !important;
+    font-weight: 400;
+    border: 1 solid #212529;
+
+
+}
+
+.registration-name.form-control:focus,
+.registration-phone.form-control:focus,
+.registration-email.form-control:focus,
+.registration-company.form-control:focus,
+.registration-address.form-control:focus,
+.registration-password.form-control:focus,
+.registration-confirmPassword.form-control:focus{
+    background: rgba(255, 255, 255, 0.5);
+    border-color: #212529;
+    box-shadow: 0 0 0 0.2rem #212529;
+}
+
+.login-btn {
+    color: #212529;
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight: 700;
+}

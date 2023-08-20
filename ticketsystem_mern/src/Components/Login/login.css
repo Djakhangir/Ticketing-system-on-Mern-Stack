@@ -1,6 +1,6 @@
 .form-control {
   height: 50px;
-  color: white !important;
+  color: white;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.05) !important;
   border-radius: 40px !important;
@@ -16,24 +16,25 @@
   transform: scale(1.2); /* Zoom-in effect 
 } */
 
-.form-control[name="email"]:focus,
-.form-control[name="password"]:focus {
+.login-email.form-control:focus,
+.login-password.form-control:focus {
   background: rgba(255, 255, 255, 0.8);
-  border-color: #ffff !important;
-  box-shadow: 0 0 0 0.2rem #ffff !important;
+  border-color: #fff;
+  box-shadow: 0 0 0 0.2rem #fff;
+  color: #fff
 }
 
-.form-control[name="email"],
-.form-control[name="password"]
-{
-  border-color: #ffff !important;
-  box-shadow: 0 0 0 0.01rem #ffff !important;
-  color: white !important;
+.login-email.form-control,
+.login-password.form-control {
+  border-color: #ffff;
+  box-shadow: 0 0 0 0.01rem #ffff;
+  color: white;
   font-weight: 700;
 }
 
-.form-control::placeholder {
-  color: white !important;
+.login-email.form-control::placeholder,
+.login-password.form-control::placeholder  {
+  color: white;
   font-weight: 700;
 }
 

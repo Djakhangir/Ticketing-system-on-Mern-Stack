@@ -5,9 +5,9 @@ import RegistrationForm from "../../Components/RegistrationForm/RegistrationForm
 export const Registration = () => {
     
   return (
-    <div className="registration-page bg-info">
+    <div className="registration-page">
 
-      <div className="jumbotron test">
+      <div className="jumbotron registration-box">
         <RegistrationForm/>
       </div>
     </div>

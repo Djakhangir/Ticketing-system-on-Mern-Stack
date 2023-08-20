@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { registrationUserAction } from "./RegistrationUserAction";
+import  "./RegistrationForm.styles.css";
 
 const initialState = {
   name: "Jake A",
@@ -96,7 +97,7 @@ const RegistrationForm = () => {
       <Container>
         <Row>
           <Col>
-            <h1 className="text-info">User Registration</h1>
+            <h1 className="text-dark text-center">User Registration</h1>
           </Col>
         </Row>
         <hr />
@@ -115,6 +116,7 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Full Name</Form.Label>
                 <Form.Control
+                className="registration-name"
                   type="text"
                   name="name"
                   value={newUser.name}
@@ -126,6 +128,7 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Phone</Form.Label>
                 <Form.Control
+                className="registration-phone"
                   type="number"
                   name="phone"
                   value={newUser.phone}
@@ -137,13 +140,14 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
+                className="registration-email"
                   type="email"
                   name="email"
                   value={newUser.email}
                   onChange={handleOnChange}
                   placeholder="Enter email"
                 />
-                <Form.Text className="text-muted">
+                <Form.Text className="text-muted m-3">
                   We'll never share your email with anyone else.
                 </Form.Text>
               </Form.Group>
@@ -151,17 +155,19 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Company Name</Form.Label>
                 <Form.Control
+                className="registration-company"
                   type="text"
                   name="company"
                   value={newUser.company}
                   onChange={handleOnChange}
-                  placeholder="Comany Name"
+                  placeholder="Company Name"
                 />
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Address</Form.Label>
                 <Form.Control
+                className="registration-address"
                   type="text"
                   name="address"
                   value={newUser.address}
@@ -173,6 +179,7 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                className="registration-password"
                   type="password"
                   name="password"
                   value={newUser.password}
@@ -184,6 +191,7 @@ const RegistrationForm = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
+                className="registration-confirmPassword"
                   type="password"
                   name="confirmPassword"
                   value={newUser.confirmPassword}
@@ -245,10 +253,10 @@ const RegistrationForm = () => {
             </Form>
           </Col>
         </Row>
-        <Row className="py-4">
+        <Row className="py-4 text-center">
           <Col>
-            Already have an account? {""}
-            <a href="/">Log in</a>
+            Already have an account?
+            <a className="login-btn" href="/">LOG IN</a>
           </Col>
         </Row>
       </Container>

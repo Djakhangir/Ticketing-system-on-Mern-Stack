@@ -3,9 +3,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url(../../Assets/img/registration_page.jpg);
 }
 
-.test{
+.registration-box{
   margin: 5rem !important;
   padding: 25px;
+  background-color: rgba(255, 255, 255, 0.7)
 }
