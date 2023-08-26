@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Button, Row, Col, Spinner, Alert } from "react-bootstrap";
+import axios from 'axios';
 // import PropTypes from "prop-types";
 
 import "./AddNewTicketForm.style.css";
@@ -9,16 +10,16 @@ import { openNewTicket } from "./AddTicketAction";
 import { resetSuccessMsg } from "./AddTicketSlice";
 
 const initialData = {
-  subject: "",
-  issueDate: "",
-  message: "",
-  // media: []
+  subject: "test",
+  issueDate: "08/24/2023",
+  message: "ssss",
+  media: []
 };
 const initialErrorData = {
   subject: false,
   issueDate: false,
   message: false,
-  // media, false,
+  // media, null,
 };
 
 const AddNewTicketForm = () => {
@@ -32,6 +33,7 @@ const AddNewTicketForm = () => {
 
   const [formData, setformData] = useState(initialData);
   const [formErrorData, setformErrorData] = useState(initialErrorData);
+    // const [image, setImage] = useState(initialData);
 
   useEffect(() => {
     return () => {
@@ -40,21 +42,46 @@ const AddNewTicketForm = () => {
   }, [dispatch, formData, formErrorData]);
 
   const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setformData({
-      ...formData,
-      [name]: value,
-    });
+    const { name, files } = e.target;
+    console.log(e.target)
+
+    if (name === 'media') {
+      setformData({
+        ...formData,
+        [name]: Array.from(files), // Convert files to an array
+      });
+    } else {
+      setformData({
+        ...formData,
+        [name]: e.target.value,
+      });
+    }
   };
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    setformErrorData(initialErrorData);
+  
     const isSubjectValid = await shortText(formData.subject);
-    setformErrorData({
-      ...initialErrorData,
-      subject: !isSubjectValid,
-    });
-    dispatch(openNewTicket({ ...formData, sender: name }));
+    if (!isSubjectValid) {
+      setformErrorData({
+        ...initialErrorData,
+        subject: true, 
+      });
+      return;
+    }
+   
+ const formDataToSend = new FormData();
+ formDataToSend.append(`subject`, formData.subject)
+ formDataToSend.append(`issueDate`, formData.issueDate)
+ formDataToSend.append(`message`, formData.message)
+
+ formData.media.forEach((file, index) => {
+  formDataToSend.append(`media-${index}`, file);
+});
+
+console.log(formData)
+console.log(formDataToSend)
+    dispatch(openNewTicket({ ...formData, sender: name}));
   };
 
   return (
@@ -66,7 +93,7 @@ const AddNewTicketForm = () => {
         {successMsg && <Alert variant="primary">{successMsg}</Alert>}
         {isLoading && <Spinner variant="primary" animation="border"/>}
       </div>
-      <Form autoComplete="off" onSubmit={handleOnSubmit} className="add-new-ticket-form">
+      <Form autoComplete="off" onSubmit={handleOnSubmit} encType="multipart/form-data" className="add-new-ticket-form">
         <Form.Group as={Row}>
           <Form.Label className="add-new-ticket-label" column sm={3}>
             Subject
@@ -113,6 +140,19 @@ const AddNewTicketForm = () => {
             rows="5"
             value={formData.message}
             required
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label> Upload File </Form.Label>
+          <Form.Control
+          className="add-new-ticket-image"
+            type="file"
+            name="media"
+            onChange={handleOnChange}
+            // value={formData.media}
+            multiple
+            // required
           ></Form.Control>
         </Form.Group>
         <br />

@@ -24,6 +24,12 @@ const TicketSchema = new Schema({
         required: true,
         default: "Pending operator response"
     },
+    media: [{
+        name:String,
+        size:Number,
+        type: {},
+        required: false,
+      }],
     conversations: [{
         sender: {
             type: String,
@@ -42,7 +48,8 @@ const TicketSchema = new Schema({
             required: true,
             default: Date.now(),
         }
-    }]
+    }],
+    
 
 })
 

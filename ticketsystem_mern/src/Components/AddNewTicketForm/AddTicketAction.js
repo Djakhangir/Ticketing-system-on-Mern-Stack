@@ -11,6 +11,7 @@ export const openNewTicket = (formData) => (dispatch) => {
       dispatch(openNewTicketPending());
       const result = await createNewTicket(formData);
       if (result.status === "error") {
+        console.log(result.message)
         return dispatch(openNewTicketFail(result.message));
       }
 

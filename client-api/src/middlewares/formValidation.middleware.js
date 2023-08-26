@@ -10,6 +10,7 @@ const phone = Joi.number().min(400000001).max(500000001).required();
 const shortStr = Joi.string().min(2).max(50);
 const longStr = Joi.string().min(2).max(1000);
 const dt = Joi.date();
+// const fl = Joi.file();
 
 const newPassword = Joi.string().min(3).max(30).required();
 
@@ -39,6 +40,13 @@ const createNewTicketValidation = (req, res, next) => {
     sender: shortStr.required(),
     message: longStr.required(),
     issueDate: dt.required(),
+    media: Joi.array().items(
+      Joi.object({
+      name: Joi.string().required(),
+      size: Joi.number().required(),
+      type: Joi.string().required(),
+    })
+    ),
   });
 
   const value = schema.validate(req.body);

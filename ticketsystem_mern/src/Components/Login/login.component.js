@@ -28,10 +28,10 @@ const LoginForm = () => {
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
 
-  const [email, setemail] = useState("J.atahanov@yahoo.com");
-  const [password, setpassword] = useState("12345678As@1");
+  const [email, setemail] = useState(""); //J.atahanov@yahoo.com
+  const [password, setpassword] = useState(""); //12345678As@1
   const [eye, setEye] = useState(false);
-  const [zoomedIn, setzoomedIn] = useState(false)
+  // const [zoomedIn, setzoomedIn] = useState(false)
 
   useEffect(() => {
     sessionStorage.getItem("accessJWT") && history.push("/dashboard");
@@ -64,7 +64,7 @@ const LoginForm = () => {
       if (isAuth.status === "error") {
         return dispatch(loginFail(isAuth.message));
       }
-      setzoomedIn(true)
+      // setzoomedIn(true)
       dispatch(loginSuccess());
       dispatch(getUserProfile());
       history.push("/dashboard");

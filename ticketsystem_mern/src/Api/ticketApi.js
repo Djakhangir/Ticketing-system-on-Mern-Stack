@@ -79,7 +79,7 @@ export const createNewTicket = (formData) => {
                     Authorization: sessionStorage.getItem('accessJWT')
                 },
             });
-
+console.log(result.data)
             resolve(result.data);
         } catch (error) {
             console.log(error.message)
