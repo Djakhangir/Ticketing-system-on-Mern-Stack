@@ -1,6 +1,6 @@
 import axios from "axios";
+import { rootUrl } from "./http";
 
-const rootUrl = "http://localhost:3001/v1/";
 const loginUrl = rootUrl + "user/login";
 const userProfileUrl = rootUrl + "user";
 const logoutUrl = rootUrl + "user/logout";
@@ -49,6 +49,7 @@ export const userLogin = (frmData) => {
 
       if (res.data.status === "success") {
         sessionStorage.setItem("accessJWT", res.data.accessJWT);
+        sessionStorage.setItem("role", res.data.role || "tenant");
         localStorage.setItem(
           "buildingmgmSite",
           JSON.stringify({ refreshJWT: res.data.refreshJWT })

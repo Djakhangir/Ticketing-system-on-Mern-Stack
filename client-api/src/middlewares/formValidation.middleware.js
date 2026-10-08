@@ -2,21 +2,17 @@ const Joi = require("joi");
 
 const email = Joi.string().email({
   minDomainSegments: 2,
-  tlds: { allow: ["com", "net"] },
+  tlds: { allow: false },
 });
 
 const pin = Joi.number().min(100000).max(999999).required();
-const phone = Joi.number().min(400000001).max(500000001).required();
-const shortStr = Joi.string().min(2).max(50);
-const longStr = Joi.string().min(2).max(1000);
-const dt = Joi.date();
-// const fl = Joi.file();
+const shortStr = Joi.string().min(1).max(80);
+const longStr = Joi.string().min(1).max(1000);
 
-const newPassword = Joi.string().min(3).max(30).required();
+const newPassword = Joi.string().min(8).max(100).required();
 
 const resetPasswordRequestValidation = (req, res, next) => {
   const schema = Joi.object({ email });
-
   const value = schema.validate(req.body);
   if (value.error) {
     return res.json({ status: "error", message: value.error.message });
@@ -26,7 +22,6 @@ const resetPasswordRequestValidation = (req, res, next) => {
 
 const updatePasswordValidation = (req, res, next) => {
   const schema = Joi.object({ email, pin, newPassword });
-
   const value = schema.validate(req.body);
   if (value.error) {
     return res.json({ status: "error", message: value.error.message });
@@ -34,57 +29,43 @@ const updatePasswordValidation = (req, res, next) => {
   next();
 };
 
-const createNewTicketValidation = (req, res, next) => {
-  const schema = Joi.object({
-    subject: shortStr.required(),
-    sender: shortStr.required(),
-    message: longStr.required(),
-    issueDate: dt.required(),
-    media: Joi.array().items(
-      Joi.object({
-      name: Joi.string().required(),
-      size: Joi.number().required(),
-      type: Joi.string().required(),
-    })
-    ),
-  });
-
-  const value = schema.validate(req.body);
-  if (value.error) {
-    return res.json({ status: "error", message: value.error.message });
-  }
-
-  next();
-};
-
+// Reply is a JSON body (no file upload) so it can be validated up front.
 const replyMessageValidation = (req, res, next) => {
   const schema = Joi.object({
     sender: shortStr.required(),
     message: longStr.required(),
   });
-
   const value = schema.validate(req.body);
   if (value.error) {
     return res.json({ status: "error", message: value.error.message });
   }
-
   next();
 };
 
 const newUserValidation = (req, res, next) => {
   const schema = Joi.object({
     name: shortStr.required(),
-    company: shortStr.required(),
-    email: shortStr.required(),
-    address: shortStr.required(),
-    phone: phone,
-    password: shortStr.required(),
+    email: email.required(),
+    role: Joi.string()
+      .valid("tenant", "superintendent", "management", "landlord")
+      .required(),
+    building: shortStr.required(),
+    // Only tenants must supply an apartment; others may leave it blank.
+    apartment: Joi.string().allow("").max(20),
+    address: Joi.string().allow("").max(100),
+    phone: Joi.string().allow("").max(20),
+    password: Joi.string().min(8).max(100).required(),
   });
 
   const value = schema.validate(req.body);
-  
   if (value.error) {
     return res.json({ status: "error", message: value.error.message });
+  }
+  if (req.body.role === "tenant" && !req.body.apartment) {
+    return res.json({
+      status: "error",
+      message: "Apartment/unit is required for tenants",
+    });
   }
   next();
 };
@@ -92,7 +73,6 @@ const newUserValidation = (req, res, next) => {
 module.exports = {
   resetPasswordRequestValidation,
   updatePasswordValidation,
-  createNewTicketValidation,
   replyMessageValidation,
   newUserValidation,
 };

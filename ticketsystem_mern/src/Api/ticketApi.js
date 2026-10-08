@@ -1,90 +1,77 @@
 import axios from "axios";
+import { rootUrl, authHeader } from "./http";
 
-const rootUrl = 'http://localhost:3001/v1/'
-const getAllTicketsUrl = rootUrl + 'ticket'
-const ticketUrl = rootUrl + 'ticket/'
-const closeTicketUrl = rootUrl + "ticket/close-ticket/"
+const ticketUrl = rootUrl + "ticket/";
 
-export const getAllTickets = () => {
-    return new Promise(async(resolve, reject) => {
-        try {
-            const result = await axios.get(getAllTicketsUrl, {
-                headers: {
-                    Authorization: sessionStorage.getItem('accessJWT')
-                }
-            });
-            resolve(result);
-        } catch (error) {
-            reject(error)
-        }
-    })
-}
+export const getAllTickets = () => axios.get(ticketUrl, authHeader());
 
-export const getTicket = (_id) => {
-    return new Promise(async(resolve, reject) => {
-        try {
-            const result = await axios.get(ticketUrl + _id, {
-                headers: {
-                    Authorization: sessionStorage.getItem('accessJWT')
-                }
-            });
-            resolve(result);
-        } catch (error) {
-            console.log(error.message)
-            reject(error)
-        }
-    })
-}
+export const getTicket = (_id) => axios.get(ticketUrl + _id, authHeader());
 
-export const updateReplyTicket = (_id, msgObj) => {
-    return new Promise(async(resolve, reject) => {
-        try {
-            const result = await axios.put(ticketUrl + _id, msgObj, {
-                headers: {
-                    Authorization: sessionStorage.getItem('accessJWT')
-                },
-            });
+export const createNewTicket = async (formData) => {
+  const result = await axios.post(ticketUrl, formData, authHeader());
+  return result.data;
+};
 
-            resolve(result.data);
-        } catch (error) {
-            console.log(error.message)
-            reject(error)
-        }
-    })
-}
+export const updateReplyTicket = async (_id, msgObj) => {
+  const result = await axios.put(ticketUrl + _id, msgObj, authHeader());
+  return result.data;
+};
 
-export const updateTicketStatustoClose = (_id) => {
-    return new Promise(async(resolve, reject) => {
-        try {
-            const result = await axios.patch(closeTicketUrl + _id, {}, {
-                headers: {
-                    Authorization: sessionStorage.getItem('accessJWT')
-                },
-            });
+export const closeTicket = async (_id) => {
+  const result = await axios.patch(
+    ticketUrl + "close-ticket/" + _id,
+    {},
+    authHeader()
+  );
+  return result.data;
+};
 
-            resolve(result.data);
-        } catch (error) {
-            console.log(error.message)
-            reject(error)
-        }
-    })
-}
+// ---- Staff actions ----
+export const assignTicket = async (_id, assignedTo) => {
+  const result = await axios.patch(
+    ticketUrl + "assign/" + _id,
+    { assignedTo },
+    authHeader()
+  );
+  return result.data;
+};
 
-export const createNewTicket = (formData) => {
-    console.log("from Api", formData)
-    return new Promise(async(resolve, reject) => {
-        try {
-            const result = await axios.post(ticketUrl, formData, {
-                headers: {
-                    Authorization: sessionStorage.getItem('accessJWT')
-                },
-            });
-console.log(result.data)
-            resolve(result.data);
-        } catch (error) {
-            console.log(error.message)
-            reject(error)
-        }
-    })
-}
+export const setTicketStatus = async (_id, status) => {
+  const result = await axios.patch(
+    ticketUrl + "status/" + _id,
+    { status },
+    authHeader()
+  );
+  return result.data;
+};
 
+export const addPart = async (_id, part) => {
+  const result = await axios.post(ticketUrl + "parts/" + _id, part, authHeader());
+  return result.data;
+};
+
+export const updatePartStatus = async (_id, partId, status) => {
+  const result = await axios.patch(
+    `${ticketUrl}parts/${_id}/${partId}`,
+    { status },
+    authHeader()
+  );
+  return result.data;
+};
+
+export const scheduleAppointment = async (_id, appointment) => {
+  const result = await axios.post(
+    ticketUrl + "appointment/" + _id,
+    appointment,
+    authHeader()
+  );
+  return result.data;
+};
+
+export const getStaffDirectory = async (role = "superintendent") => {
+  const result = await axios.get(
+    `${rootUrl}user/staff?role=${role}`,
+    authHeader()
+  );
+  return result.data;
+};

@@ -58,7 +58,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkouYXRhaGFub3ZA
 ### Open new ticket
 POST http://localhost:3001/v1/ticket
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImUyQGUuY29tIiwiaWF0IjoxNjA5ODkxOTg0LCJleHAiOjE2MDk5NzgzODR9.7cUfpK_RF68a-xfxVXuet4PWVqwToUPyDXpupFlCQNI
-Content-Type: application/json 
+Content-Type: multipart/form-data
 
 {
  "subject": "Form Issue",
@@ -77,7 +77,7 @@ Authorization:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImUyQGUuY29tIiw
 ### Reply message to the ticket
 PUT http://localhost:3001/v1/ticket/64548e9c0cf60a372af82f7c
 Authorization:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImUyQGUuY29tIiwiaWF0IjoxNjA5ODkxOTg0LCJleHAiOjE2MDk5NzgzODR9.7cUfpK_RF68a-xfxVXuet4PWVqwToUPyDXpupFlCQNI
-Content-Type: application/json 
+Content-Type: multipart/form-data
 
 { 
     "message": "this is the 222 reply", 

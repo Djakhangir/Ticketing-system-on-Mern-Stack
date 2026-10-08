@@ -1,0 +1,43 @@
+# Render Blueprint for the backend API + Redis.
+# MongoDB: use a free MongoDB Atlas cluster and paste its SRV string as
+# MONGO_URL in the Render dashboard (Render has no managed MongoDB).
+#
+# Deploy: push to GitHub, then in Render -> "New +" -> "Blueprint" -> pick this repo.
+# After it deploys, set CLIENT_ORIGIN to your frontend URL and MONGO_URL to Atlas.
+
+services:
+  - type: web
+    name: apartment-care-api
+    runtime: docker
+    dockerfilePath: ./client-api/Dockerfile
+    dockerContext: ./client-api
+    healthCheckPath: /health
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      # Paste your MongoDB Atlas connection string in the dashboard.
+      - key: MONGO_URL
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: apartment-care-redis
+          property: connectionString
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET_EXP_DAY
+        value: 30
+      # Set this to your deployed frontend origin (no trailing slash).
+      - key: CLIENT_ORIGIN
+        sync: false
+
+  - type: redis
+    name: apartment-care-redis
+    plan: free
+    maxmemoryPolicy: noeviction
+    ipAllowList: [] # internal-only access from the API service

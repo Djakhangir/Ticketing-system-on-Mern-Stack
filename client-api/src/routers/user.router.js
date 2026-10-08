@@ -7,6 +7,7 @@ const {
   insertUser,
   getUserByEmail,
   getUserById,
+  getUsersByRole,
   updatePassword,
   storeUserRefreshJWT,
   verifyUser,
@@ -17,6 +18,7 @@ const { hashPassword, comparePassword } = require("../helpers/bycript.helper");
 const { createAccessJWT, createRefreshJWT } = require("../helpers/jwt.helper");
 const {
   userAuthorization,
+  staffOnly,
 } = require("../middlewares/authorization.middleware");
 const {
   setPasswordResetPin,
@@ -29,11 +31,11 @@ const {
   updatePasswordValidation,
   newUserValidation,
 } = require("../middlewares/formValidation.middleware");
-const { verify } = require("jsonwebtoken");
 const { deleteJWT } = require("../helpers/redis.helper");
 
-//##TODO: provide the link from domain or define the url in environment (url where user redirected after click on link in email)
-const verificationURL = "http://localhost:3000/verification/";
+// Frontend origin where users land after clicking the email verification link.
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:3000";
+const verificationURL = `${CLIENT_ORIGIN}/verification/`;
 
 //router has get, post, all methods;
 // When router.all() it will always opass through this router. next() is nessesary;
@@ -44,16 +46,24 @@ router.all("/", (req, res, next) => {
 
 //Get user profile router
 router.get("/", userAuthorization, async (req, res) => {
-  const _id = req.userId;
-  const userProfile = await getUserById(_id);
-  const { name, email } = userProfile;
+  const { _id, name, email, role, building, apartment, phone } = req.user;
   res.json({
-    user: {
-      _id,
-      name,
-      email,
-    },
+    user: { _id, name, email, role, building, apartment, phone },
   });
+});
+
+// Staff directory: list users of a given role (optionally within a building).
+// Used by superintendents/management to assign tickets to professionals.
+router.get("/staff", userAuthorization, staffOnly, async (req, res) => {
+  try {
+    const { role, building } = req.query;
+    const targetRole = role || "superintendent";
+    const scope = building || req.user.building;
+    const users = await getUsersByRole(targetRole, scope);
+    return res.json({ status: "success", users });
+  } catch (error) {
+    return res.json({ status: "error", message: error.message });
+  }
 });
 
 //Verify user after sign up
@@ -86,14 +96,16 @@ router.patch("/verify", async (req, res) => {
 });
 
 //create new user route
-router.post("/", newUserValidation, async (req, res, next) => {
-  const { name, company, email, address, phone, password } = req.body;
+router.post("/", newUserValidation, async (req, res) => {
+  const { name, role, building, apartment, email, address, phone, password } =
+    req.body;
   try {
-    //hash password
     const hashPass = await hashPassword(password);
     const newUserObj = {
       name,
-      company,
+      role,
+      building,
+      apartment: role === "tenant" ? apartment : "",
       email,
       address,
       phone,
@@ -110,16 +122,10 @@ router.post("/", newUserValidation, async (req, res, next) => {
 
     res.json({ status: "success", message: "New User Created", result });
   } catch (error) {
-    //TODO: fix the error message in backend for new user has already an account
-
-    // console.log(error);
-    // const message =
-    //   "Unable to create new user at the moment, Please try again or contact administration!";
-
-    // if (error.message.includes("duplicate key error collection")) {
-    //   const message = "This email already has an account";
-    // }
-    res.json({ status: "error", message});
+    const message = error.message.includes("duplicate key")
+      ? "This email already has an account"
+      : "Unable to create new user at the moment. Please try again.";
+    res.json({ status: "error", message });
   }
 });
 
@@ -131,36 +137,55 @@ router.post("/login", async (req, res) => {
     return res.json({ status: "error", message: "Invalid form" });
   }
 
-  ///get user with email from db;
-  const user = await getUserByEmail(email);
+  try {
+    ///get user with email from db;
+    const user = await getUserByEmail(email);
 
-  if (!user.isVerified) {
-    return res.json({
+    // Unknown email: respond with the same generic message as a bad password
+    // so we don't leak which emails exist, and avoid dereferencing null.
+    if (!user || !user._id) {
+      return res.json({
+        status: "error",
+        message: "Invalid email or password",
+      });
+    }
+
+    if (!user.isVerified) {
+      return res.json({
+        status: "error",
+        message:
+          "Your account has not been verified yet. Please check your email and verify your account before able to login.",
+      });
+    }
+
+    ///hash our password and compare with the db;
+    const result = await comparePassword(password, user.password);
+    if (!result) {
+      return res.json({
+        status: "error",
+        message: "Invalid email or password",
+      });
+    }
+    //import and use helper jwt function to generate token;
+    const accessJWT = await createAccessJWT(user.email, `${user._id}`);
+    const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
+
+    res.json({
+      status: "success",
+      message: "Login successfull",
+      accessJWT,
+      refreshJWT,
+      role: user.role,
+      building: user.building,
+      apartment: user.apartment,
+      name: user.name,
+    });
+  } catch (error) {
+    res.json({
       status: "error",
-      message:
-        "Your account has not been verified yet. Please check your email and verify your account before able to login.",
+      message: "Unable to sign you in right now. Please try again later.",
     });
   }
-  /// get the password from db;
-  const passwordFromDb = user && user._id ? user.password : null;
-  if (!passwordFromDb)
-    return res.json({ status: "error", message: "Invalid email or password" });
-
-  ///hash our password and compare with the db;
-  const result = await comparePassword(password, passwordFromDb);
-  if (!result) {
-    return res.json({ status: "error", message: "Invalid email or password" });
-  }
-  //import and use helper jwt function to generate token;
-  const accessJWT = await createAccessJWT(user.email, `${user._id}`);
-  const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
-
-  res.json({
-    status: "success",
-    message: "Login successfull",
-    accessJWT,
-    refreshJWT,
-  });
 });
 
 //reset password by requesting new password
@@ -175,7 +200,6 @@ router.post(
     if (user && user._id) {
       //generate the random pin
       const setPin = await setPasswordResetPin(email);
-console.log(setPin);   
       //generate and send email to the client with pin to reset password
       await emailProcessor({
         email,

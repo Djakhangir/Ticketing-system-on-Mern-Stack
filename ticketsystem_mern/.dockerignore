@@ -1,0 +1,10 @@
+node_modules
+build
+npm-debug.log
+.env
+.git
+.gitignore
+README.md
+*.test.js
+mocha.config.js
+package-lock 2.json

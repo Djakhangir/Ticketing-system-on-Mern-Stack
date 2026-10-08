@@ -1,109 +1,59 @@
 const { UserSchema } = require("./User.schema");
 
-const insertUser = (userObj) => {
-  return new Promise((resolve, reject) => {
-    UserSchema(userObj)
-      .save()
-      .then((data) => resolve(data))
-      .catch((error) => reject(error));
-  });
-};
+const insertUser = (userObj) => UserSchema(userObj).save();
 
 const getUserByEmail = (email) => {
-  return new Promise((resolve, reject) => {
-    if (!email) return false;
-    try {
-      //use userSchema to do the query;
-      UserSchema.findOne({ email }, (error, data) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(data);
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
+  if (!email) return null;
+  return UserSchema.findOne({ email });
 };
 
 const getUserById = (_id) => {
-  return new Promise((resolve, reject) => {
-    if (!_id) return false;
-    try {
-      //use userSchema to do the query;
-      UserSchema.findOne({ _id }, (error, data) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(data);
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-const storeUserRefreshJWT = (_id, token) => {
-  return new Promise((resolve, reject) => {
-    try {
-      UserSchema.findOneAndUpdate(
-        { _id },
-        {
-          $set: { "refreshJWT.token": token },
-          "refreshJWT.addedAt": Date.now(),
-        },
-        { new: true }
-      )
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
+  if (!_id) return null;
+  return UserSchema.findById(_id);
 };
 
-const updatePassword = (email, newhashedPass) => {
-  return new Promise((resolve, reject) => {
-    try {
-      UserSchema.findOneAndUpdate(
-        { email },
-        {
-          $set: { password: newhashedPass },
-        },
-        { new: true }
-      )
-        .then((data) => resolve(data))
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
+// Staff directory queries used for assignment and oversight.
+const getUsersByRole = (role, building) => {
+  const query = { role };
+  if (building) query.building = building;
+  return UserSchema.find(query).select("name email role building apartment phone");
 };
 
-const verifyUser = (_id, email) => {
-  return new Promise((resolve, reject) => {
-    try {
-      UserSchema.findOneAndUpdate(
-        { _id, email, isVerified: false },
-        {
-          $set: { isVerified: true },
-        },
-        { new: true }
-      )
-        .then((data) => resolve(data))
-        .catch((error) => {
-          reject(error);
-        });
-    } catch (error) {
-      console.log(error.message);
-      reject(error);
-    }
-  });
-};
+// Everyone who should be notified about activity in a building's ticket:
+// the tenant owner is handled separately; here we return the staff pool.
+const getBuildingStaff = (building) =>
+  UserSchema.find({
+    building,
+    role: { $in: ["superintendent", "management", "landlord"] },
+  }).select("name email role building phone");
+
+const storeUserRefreshJWT = (_id, token) =>
+  UserSchema.findOneAndUpdate(
+    { _id },
+    { $set: { "refreshJWT.token": token, "refreshJWT.addedAt": Date.now() } },
+    { new: true }
+  );
+
+const updatePassword = (email, newhashedPass) =>
+  UserSchema.findOneAndUpdate(
+    { email },
+    { $set: { password: newhashedPass } },
+    { new: true }
+  );
+
+const verifyUser = (_id, email) =>
+  UserSchema.findOneAndUpdate(
+    { _id, email, isVerified: false },
+    { $set: { isVerified: true } },
+    { new: true }
+  );
 
 module.exports = {
   insertUser,
   getUserByEmail,
   getUserById,
+  getUsersByRole,
+  getBuildingStaff,
   storeUserRefreshJWT,
   updatePassword,
   verifyUser,

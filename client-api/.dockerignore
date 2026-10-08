@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+uploads/images/*
+README.md
+*.test.js
+mocha.config.js
+mongoTest.js

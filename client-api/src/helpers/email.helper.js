@@ -1,90 +1,77 @@
 const nodemailer = require("nodemailer");
 
-
-// create reusable transporter object using the default SMTP transport
-
-// ##### Fake host for testing and development purposes.
-// #### FYI:
-// ### when new real account and data added, 
-// ### it is a must that auth object is done through env file for security purposes. do not provide your data in here
-
+// Credentials come from env in any real deployment. For local dev we fall back
+// to a shared Ethereal test inbox (messages are captured, never delivered).
 const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'mable69@ethereal.email',
-        pass: '91EACsBe2TT5NU3C1k'
-    }
+  host: process.env.SMTP_HOST || "smtp.ethereal.email",
+  port: Number(process.env.SMTP_PORT) || 587,
+  auth: {
+    user: process.env.SMTP_USER || "mable69@ethereal.email",
+    pass: process.env.SMTP_PASS || "91EACsBe2TT5NU3C1k",
+  },
 });
 
-//send email with info
-const send = (emailInfo) => {
+const FROM = process.env.SMTP_FROM || '"BuildingMGM" <no-reply@buildingmgm.app>';
 
-    return new Promise(async(resolve, reject) => {
-        try {
-            // send mail with defined transport object
-            let result = await transporter.sendMail(emailInfo);
-
-            console.log("Message sent: %s", result.messageId);
-            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-            // Preview only available when sending through an Ethereal account
-            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(result));
-            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-
-            resolve(result)
-        } catch (err) {
-            console.log(err)
-        }
-    })
-
-}
-
-//generate email and call send function
-
-const emailProcessor = ({ email, pin, type, verificationLink="" }) => {
-
-    //##TODO: Define the email to/from send (SMTP);
-    
-    let emailInfo = '';
-    switch (type) {
-        case "request-new-password":
-            emailInfo = {
-
-                from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
-                to: email, // list of receivers
-                subject: "Password reset Pin", // Subject line
-                text: "Here is your password reset Pin" + pin + " This pin will expire in 1 day", // plain text body
-                html: `<b>Hello </b>
-                    Here is your pin number
-                    <b>${pin} </b>
-                    <p> This pin will expire in 1 day</p>`, // html body
-            }
-
-            send(emailInfo)
-            break;
-        case 'password-update-success':
-        case 'new-user-confirmation-required':
-            emailInfo = {
-
-                from: '"BuildingMGM" <fmable69@ethereal.email>', // sender address
-                to: email, // list of receivers
-                subject: "Please verify your new user", // Subject line
-                text: "Please follow the link to verify your account before you can login", // plain text body
-                html: `<b>Hello </b>
-
-            <p>Please follow the link to verify your account before you can login</p>
-            <p>${verificationLink}</p>
-            `, // html body
-            }
-
-            send(emailInfo);
-            break;
-        default:
-            break;
+const send = async (emailInfo) => {
+  try {
+    const result = await transporter.sendMail({ from: FROM, ...emailInfo });
+    if (process.env.NODE_ENV !== "production") {
+      console.log("Email sent:", result.messageId);
+      const preview = nodemailer.getTestMessageUrl(result);
+      if (preview) console.log("Preview URL:", preview);
     }
+    return result;
+  } catch (err) {
+    console.log("Email send failed:", err.message);
+  }
+};
 
+const emailProcessor = ({
+  email,
+  pin,
+  type,
+  verificationLink = "",
+  subject = "",
+  body = "",
+}) => {
+  switch (type) {
+    case "request-new-password":
+      return send({
+        to: email,
+        subject: "Password reset PIN",
+        html: `<b>Hello,</b>
+          <p>Here is your password reset PIN: <b>${pin}</b></p>
+          <p>This PIN will expire in 1 day.</p>`,
+      });
 
-}
+    case "password-update-success":
+      return send({
+        to: email,
+        subject: "Your password was updated",
+        html: `<b>Hello,</b><p>Your password was updated successfully.</p>`,
+      });
 
-module.exports = { emailProcessor }
+    case "new-user-confirmation-required":
+      return send({
+        to: email,
+        subject: "Verify your account",
+        html: `<b>Welcome,</b>
+          <p>Please verify your account before you sign in:</p>
+          <p><a href="${verificationLink}">${verificationLink}</a></p>`,
+      });
+
+    // Generic transactional notification (new message, package, parts, etc.).
+    case "notification":
+      return send({
+        to: email,
+        subject: subject || "Update from your building",
+        html: `<b>Hello,</b><p>${body}</p>`,
+      });
+
+    default:
+      break;
+  }
+};
+
+module.exports = { emailProcessor };

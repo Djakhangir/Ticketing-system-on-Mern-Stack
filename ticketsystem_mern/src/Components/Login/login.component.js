@@ -1,153 +1,109 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  Spinner,
-  Alert,
-  InputGroup,
-} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-
 import { loginPending, loginSuccess, loginFail } from "./loginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUserProfile } from "../../Pages/Dashboard/userAction";
-
 import { userLogin } from "../../Api/userApi";
-import "./login.css";
 
+// Cinematic sign-in: a frosted glass panel floats over a grand lobby facade.
+// On a successful login the whole scene rushes through the golden doorway
+// before we route into the app.
 const LoginForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
   const { isLoading, isAuth, error } = useSelector((state) => state.login);
 
-
-  const [email, setemail] = useState(""); //J.atahanov@yahoo.com
-  const [password, setpassword] = useState(""); //12345678As@1
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
   const [eye, setEye] = useState(false);
-  // const [zoomedIn, setzoomedIn] = useState(false)
+  const [zooming, setZooming] = useState(false);
 
   useEffect(() => {
-    sessionStorage.getItem("accessJWT") && history.push("/dashboard");
+    if (sessionStorage.getItem("accessJWT")) history.push("/dashboard");
   }, [history, isAuth]);
-
-
-  const handleonChange = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case "email":
-        setemail(value);
-        break;
-
-      case "password":
-        setpassword(value);
-        break;
-      default:
-        break;
-    }
-  };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      return alert("You missed one of the required fields");
-    }
+    if (!email || !password) return;
     dispatch(loginPending());
     try {
-      const isAuth = await userLogin({ email, password });
-      if (isAuth.status === "error") {
-        return dispatch(loginFail(isAuth.message));
-      }
-      // setzoomedIn(true)
+      const res = await userLogin({ email, password });
+      if (res.status === "error") return dispatch(loginFail(res.message));
       dispatch(loginSuccess());
       dispatch(getUserProfile());
-      history.push("/dashboard");
-      console.log(isAuth);
-    } catch (error) {
-      dispatch(loginFail(error.message));
+      // Play the zoom, then travel into the building.
+      setZooming(true);
+      setTimeout(() => history.push("/dashboard"), 1450);
+    } catch (err) {
+      dispatch(loginFail(typeof err === "string" ? err : err.message));
     }
-  };
-
-  const handleTheEye = () => {
-    setEye(!eye);
   };
 
   return (
-    <Container className="login-container">
-      <Row>
-        <Col>
-          <h1 className="text text-center"> Have an account? </h1> <hr />
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form autoComplete="off" onSubmit={handleOnSubmit}>
-            <Form.Group className="mt-3">
-              <Form.Control
-              className="login-email"
-                size="sm"
-                onChange={handleonChange}
-                type="email"
-                name="email"
-                value={email}
-                placeholder="Enter Email"
-                required
-              ></Form.Control>
-            </Form.Group>
-            <br />
-            <InputGroup>
-              <Form.Control
-              className="login-password"
-                size="sm"
-                type={eye ? "text" : "password"}
-                name="password"
-                value={password}
-                placeholder="Password"
-                onChange={handleonChange}
-                required
-              ></Form.Control>
-              <FontAwesomeIcon
-                onClick={handleTheEye}
-                icon={!eye ? faEyeSlash : faEye}
-                style={{
-                  cursor: "pointer",
-                  zIndex: "999",
-                  position: "absolute",
-                  left: "90%",
-                  top: "16px",
-                }}
-              />
-            </InputGroup>
+    <div className={`lux-entry ${zooming ? "zooming" : ""}`}>
+      <div className="lux-scene" aria-hidden="true">
+        <div className="lux-facade">
+          <div className="lux-door" />
+        </div>
+      </div>
 
-            <br />
-            <Button type="submit"> Login </Button>
-            {isLoading && <Spinner variant="primary" animation="border" />}
-          </Form>
-          <hr />
-        </Col>
-      </Row>
-      <Row className="py-1">
-        <Col >
-          <a className="forgetPassBtn" href="/password-reset">
-            Forgot Password ?
-          </a>
-        </Col>
-      </Row>
-      <Row >
-        <Col>
-          <p  className="registrationBtnContainer">Don't have an account?
-          <a className="registrationBtn" href="/registration"> SIGN UP</a> </p>
-        </Col>
-      </Row>
-    </Container>
+      <div className="lux-auth lux-glass lux-rise">
+        <p className="lux-kicker">The Residences</p>
+        <h1>Welcome home</h1>
+        <p className="sub">Sign in to your building concierge.</p>
+
+        {error && <div className="lux-alert error">{error}</div>}
+
+        <form autoComplete="off" onSubmit={handleOnSubmit}>
+          <label className="lux-label">Email</label>
+          <input
+            className="lux-input"
+            type="email"
+            value={email}
+            placeholder="you@residence.com"
+            onChange={(e) => setemail(e.target.value)}
+            required
+          />
+          <div style={{ height: 16 }} />
+          <label className="lux-label">Password</label>
+          <div style={{ position: "relative" }}>
+            <input
+              className="lux-input"
+              type={eye ? "text" : "password"}
+              value={password}
+              placeholder="••••••••"
+              onChange={(e) => setpassword(e.target.value)}
+              required
+            />
+            <FontAwesomeIcon
+              onClick={() => setEye(!eye)}
+              icon={eye ? faEye : faEyeSlash}
+              style={{
+                cursor: "pointer",
+                position: "absolute",
+                right: 14,
+                top: 14,
+                color: "var(--lux-ink-dim)",
+              }}
+            />
+          </div>
+
+          <div style={{ height: 24 }} />
+          <button className="lux-btn" type="submit" style={{ width: "100%" }} disabled={isLoading}>
+            {isLoading ? <span className="lux-spinner" /> : "Enter"}
+          </button>
+        </form>
+
+        <hr className="lux-hairline" />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <a href="/password-reset">Forgot password?</a>
+          <a href="/registration">Create account</a>
+        </div>
+      </div>
+    </div>
   );
 };
 
 export default LoginForm;
-
-LoginForm.propTypes = {
-  loginFormSwitcher: PropTypes.func.isRequired,
-};

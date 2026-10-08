@@ -1,98 +1,80 @@
-const { TicketSchema } = require('./Ticket.schema')
+const { TicketSchema } = require("./Ticket.schema");
 
-const insertTicket = ticketObj => {
+const insertTicket = (ticketObj) => TicketSchema(ticketObj).save();
 
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema(ticketObj).save().then(data =>
-                resolve(data)
-            ).catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+// Tenant view: only their own tickets.
+const getTickets = (clientId) =>
+  TicketSchema.find({ clientId }).sort({ openAt: -1 });
 
-const getTickets = clientId => {
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema
-                .find({ clientId })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+// Staff view: every ticket in a building (management/landlord may pass no
+// building to see all).
+const getTicketsForStaff = (building) => {
+  const query = building ? { building } : {};
+  return TicketSchema.find(query).sort({ openAt: -1 });
+};
 
+// Tenant fetch is scoped by clientId; staff fetch by _id only.
 const getTicketById = (_id, clientId) => {
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema
-                .find({ _id, clientId })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+  const query = clientId ? { _id, clientId } : { _id };
+  return TicketSchema.findOne(query);
+};
 
-const updateClientReply = ({ _id, message, sender }) => {
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema
-                .findOneAndUpdate({ _id }, {
-                    status: 'Pending operator response',
-                    $push: {
-                        conversations: {
-                            message,
-                            sender
-                        }
-                    }
-                }, { new: true })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+const addReply = ({ _id, message, sender, senderId, senderRole, status }) =>
+  TicketSchema.findOneAndUpdate(
+    { _id },
+    {
+      ...(status ? { status } : {}),
+      $push: { conversations: { message, sender, senderId, senderRole } },
+    },
+    { new: true }
+  );
 
-const updateTicketStatus = ({ _id, clientId }) => {
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema
-                .findOneAndUpdate({ _id, clientId }, {
-                    status: 'Closed',
-                }, { new: true })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+const updateTicketStatus = ({ _id, status }) =>
+  TicketSchema.findOneAndUpdate({ _id }, { status }, { new: true });
+
+const assignTicket = ({ _id, assignedTo, assignedName }) =>
+  TicketSchema.findOneAndUpdate(
+    { _id },
+    { assignedTo, assignedName, status: "In progress" },
+    { new: true }
+  );
+
+const addPart = ({ _id, part }) =>
+  TicketSchema.findOneAndUpdate(
+    { _id },
+    { $push: { parts: part }, status: "Awaiting parts" },
+    { new: true }
+  );
+
+const updatePartStatus = ({ _id, partId, status }) =>
+  TicketSchema.findOneAndUpdate(
+    { _id, "parts._id": partId },
+    { $set: { "parts.$.status": status } },
+    { new: true }
+  );
+
+const setAppointment = ({ _id, appointment }) =>
+  TicketSchema.findOneAndUpdate(
+    { _id },
+    { appointment, status: "Appointment scheduled" },
+    { new: true }
+  );
 
 const deleteTicket = ({ _id, clientId }) => {
-    return new Promise((resolve, reject) => {
-        try {
-            TicketSchema
-                .findOneAndDelete({ _id, clientId })
-                .then(data => resolve(data))
-                .catch(err => reject(err))
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+  const query = clientId ? { _id, clientId } : { _id };
+  return TicketSchema.findOneAndDelete(query);
+};
 
 module.exports = {
-    insertTicket,
-    getTickets,
-    getTicketById,
-    updateClientReply,
-    updateTicketStatus,
-    deleteTicket
-}
+  insertTicket,
+  getTickets,
+  getTicketsForStaff,
+  getTicketById,
+  addReply,
+  updateTicketStatus,
+  assignTicket,
+  addPart,
+  updatePartStatus,
+  setAppointment,
+  deleteTicket,
+};

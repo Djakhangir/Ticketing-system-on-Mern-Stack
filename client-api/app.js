@@ -7,16 +7,38 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+// const fileUpload = require("express-fileupload");
 
 
 //create port and in order to be on a safe side we hardcode the port to be from our environment or the port number
 const port = process.env.PORT || 3001
 
-//API Security;
-app.use(helmet());
+//API Security; allow images to be embedded by the frontend on another origin
+app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 
-//handle Cors error;
-app.use(cors());
+//handle Cors error; restrict to configured client origins in production,
+// allow all when CLIENT_ORIGIN is not set (local dev).
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+app.use(
+    cors(
+        allowedOrigins.length
+            ? {
+                  origin: (origin, cb) =>
+                      !origin || allowedOrigins.includes(origin)
+                          ? cb(null, true)
+                          : cb(new Error("Not allowed by CORS")),
+              }
+            : undefined
+    )
+);
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// app.use(fileUpload());
 
 //MongoDB connection Setup
 const mongoose = require('mongoose');
@@ -37,19 +59,30 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 //set BodyParser;
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+
+// Health check for deploy platforms (Render/Railway/uptime monitors).
+app.get("/health", (req, res) =>
+    res.json({ status: "ok", uptime: process.uptime() })
+);
+
+// Serve uploaded media (ticket photos, package photos).
+app.use("/uploads", express.static("uploads"));
 
 //Load routers
 const userRouter = require('./src/routers/user.router');
 const ticketRouter = require('./src/routers/ticket.router');
 const tokensRouter = require('./src/routers/tokens.router');
-
+const notificationRouter = require('./src/routers/notification.router');
+const packageRouter = require('./src/routers/package.router');
 
 //Use Routers
 app.use("/v1/user", userRouter);
 app.use("/v1/ticket", ticketRouter);
 app.use("/v1/tokens", tokensRouter);
+app.use("/v1/notification", notificationRouter);
+app.use("/v1/package", packageRouter);
 
 // Error Handler
 const handleError = require('./src/utils/errorHandler');

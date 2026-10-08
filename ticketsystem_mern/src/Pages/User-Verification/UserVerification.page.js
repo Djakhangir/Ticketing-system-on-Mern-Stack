@@ -13,15 +13,13 @@ export const UserVerification = () => {
   const { _id, email } = useParams();
   const [response, setResponse] = useState(initialResponse);
 
-  const data = { _id, email };
-
   useEffect(() => {
     const apiCall = async () => {
-      const result = await userVerification(data);
+      const result = await userVerification({ _id, email });
       setResponse(result);
     };
     !response.status && apiCall();
-  }, []);
+  }, [_id, email, response.status]);
   // call the Api and send the _id to verify user
   return (
     <div className="userVerification-page bg-info">

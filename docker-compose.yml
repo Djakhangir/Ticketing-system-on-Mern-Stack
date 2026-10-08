@@ -1,0 +1,54 @@
+# One-command local stack: Mongo + Redis + API + web.
+#   docker compose up --build
+# Then open http://localhost:3000  (API on http://localhost:3001)
+# Seed demo data:  docker compose exec api npm run seed
+
+services:
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  api:
+    build: ./client-api
+    restart: unless-stopped
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      PORT: 3001
+      NODE_ENV: production
+      MONGO_URL: mongodb://mongo:27017/TicketingSystemAJ
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: dev-access-secret-change-me
+      JWT_REFRESH_SECRET: dev-refresh-secret-change-me
+      JWT_REFRESH_SECRET_EXP_DAY: 30
+      CLIENT_ORIGIN: http://localhost:3000
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "3001:3001"
+
+  web:
+    build:
+      context: ./ticketsystem_mern
+      args:
+        REACT_APP_API_ORIGIN: http://localhost:3001
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "3000:80"
+
+volumes:
+  mongo_data:
+  uploads:

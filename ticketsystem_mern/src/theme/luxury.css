@@ -1,0 +1,581 @@
+/* ============================================================
+   Luxury theme — a rich, "boujee" glassmorphism design system.
+   Deep midnight backdrop, champagne-gold accents, frosted glass
+   surfaces, and liquid-glass chat. Shared across the whole app.
+   ============================================================ */
+
+:root {
+  --lux-bg-0: #0a0e17;
+  --lux-bg-1: #121a2b;
+  --lux-bg-2: #1b2540;
+  --lux-ink: #f4f1ea;
+  --lux-ink-soft: #b9c2d6;
+  --lux-ink-dim: #7f8aa3;
+
+  --lux-gold: #d4af37;
+  --lux-gold-2: #f3d98b;
+  --lux-champagne: #e8d9b5;
+  --lux-emerald: #3fae8f;
+  --lux-rose: #d98695;
+
+  --lux-glass: rgba(255, 255, 255, 0.06);
+  --lux-glass-strong: rgba(255, 255, 255, 0.10);
+  --lux-glass-border: rgba(255, 255, 255, 0.14);
+  --lux-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --lux-radius: 20px;
+  --lux-radius-sm: 12px;
+
+  --lux-font: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --lux-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--lux-sans);
+  color: var(--lux-ink);
+  background:
+    radial-gradient(1200px 800px at 15% -10%, rgba(212, 175, 55, 0.10), transparent 60%),
+    radial-gradient(1000px 700px at 110% 10%, rgba(63, 174, 143, 0.08), transparent 55%),
+    linear-gradient(160deg, var(--lux-bg-0), var(--lux-bg-1) 55%, var(--lux-bg-2));
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .lux-serif {
+  font-family: var(--lux-font);
+  letter-spacing: 0.3px;
+  font-weight: 600;
+}
+
+a { color: var(--lux-gold-2); text-decoration: none; }
+a:hover { color: var(--lux-gold); }
+
+/* ---------- Glass surfaces ---------- */
+.lux-glass {
+  background: var(--lux-glass);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--lux-glass-border);
+  border-radius: var(--lux-radius);
+  box-shadow: var(--lux-shadow);
+}
+
+.lux-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--lux-glass-border);
+  border-radius: var(--lux-radius);
+  box-shadow: var(--lux-shadow);
+  padding: 26px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.lux-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+}
+
+.lux-hairline {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lux-gold), transparent);
+  opacity: 0.5;
+  margin: 18px 0;
+}
+
+/* Gold-outlined section title with kicker. */
+.lux-kicker {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.72rem;
+  color: var(--lux-gold);
+  font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+.lux-btn {
+  font-family: var(--lux-sans);
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #10131c;
+  background: linear-gradient(135deg, var(--lux-gold-2), var(--lux-gold));
+  border: none;
+  border-radius: 999px;
+  padding: 11px 26px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.25);
+}
+.lux-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.lux-btn:active { transform: translateY(0); }
+.lux-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.lux-btn-ghost {
+  background: transparent;
+  color: var(--lux-ink);
+  border: 1px solid var(--lux-glass-border);
+  box-shadow: none;
+}
+.lux-btn-ghost:hover { border-color: var(--lux-gold); color: var(--lux-gold-2); }
+
+.lux-btn-sm { padding: 7px 16px; font-size: 0.85rem; }
+
+/* ---------- Inputs ---------- */
+.lux-input,
+.lux-select,
+.lux-textarea {
+  width: 100%;
+  color: var(--lux-ink);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--lux-glass-border);
+  border-radius: var(--lux-radius-sm);
+  padding: 12px 14px;
+  font-family: var(--lux-sans);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.lux-input::placeholder,
+.lux-textarea::placeholder { color: var(--lux-ink-dim); }
+.lux-input:focus,
+.lux-select:focus,
+.lux-textarea:focus {
+  border-color: var(--lux-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+.lux-select option { background: var(--lux-bg-1); color: var(--lux-ink); }
+.lux-label {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--lux-ink-soft);
+  margin-bottom: 6px;
+}
+
+/* ---------- Badges / pills ---------- */
+.lux-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  border: 1px solid var(--lux-glass-border);
+  background: var(--lux-glass);
+  color: var(--lux-ink-soft);
+}
+.lux-badge.gold { color: var(--lux-gold-2); border-color: rgba(212,175,55,0.5); }
+.lux-badge.emerald { color: var(--lux-emerald); border-color: rgba(63,174,143,0.5); }
+.lux-badge.rose { color: var(--lux-rose); border-color: rgba(217,134,149,0.5); }
+.lux-badge.dim { color: var(--lux-ink-dim); }
+
+/* ---------- Layout helpers ---------- */
+.lux-shell { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+.lux-grid { display: grid; gap: 22px; }
+.lux-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.lux-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.lux-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) {
+  .lux-grid.cols-2, .lux-grid.cols-3, .lux-grid.cols-4 { grid-template-columns: 1fr; }
+}
+
+.lux-stat { text-align: left; }
+.lux-stat .num { font-family: var(--lux-font); font-size: 2.6rem; color: var(--lux-gold-2); line-height: 1; }
+.lux-stat .lbl { color: var(--lux-ink-soft); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; margin-top: 8px; }
+
+.lux-muted { color: var(--lux-ink-dim); }
+.lux-soft { color: var(--lux-ink-soft); }
+
+/* ============================================================
+   Entry / login "zoom into the building" cinematic
+   ============================================================ */
+.lux-entry {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layered building scene built from CSS — a grand lobby that we zoom into. */
+.lux-scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 46%;
+  animation: sceneDrift 18s ease-in-out infinite alternate;
+}
+.lux-facade {
+  position: relative;
+  width: min(80vw, 720px);
+  height: min(78vh, 620px);
+  border-radius: 26px 26px 0 0;
+  background:
+    linear-gradient(180deg, rgba(30,42,74,0.9), rgba(12,17,28,0.95));
+  border: 1px solid var(--lux-glass-border);
+  box-shadow: var(--lux-shadow);
+  overflow: hidden;
+}
+/* rows of glowing windows */
+.lux-facade::before {
+  content: "";
+  position: absolute;
+  inset: 34px 34px 150px 34px;
+  background-image:
+    linear-gradient(rgba(243,217,139,0.16) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(243,217,139,0.16) 2px, transparent 2px);
+  background-size: 70px 70px;
+  border-radius: 8px;
+  opacity: 0.7;
+}
+/* grand doorway we travel toward */
+.lux-door {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 150px;
+  border-radius: 90px 90px 0 0;
+  background: radial-gradient(circle at 50% 120%, var(--lux-gold-2), var(--lux-gold) 40%, #5b4611 100%);
+  box-shadow: 0 0 60px rgba(212,175,55,0.55), inset 0 0 30px rgba(0,0,0,0.4);
+}
+.lux-door::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 130px;
+  background: rgba(0,0,0,0.35);
+}
+
+@keyframes sceneDrift {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.03) translateY(-8px); }
+}
+
+/* The zoom that plays on successful login: rush through the door. */
+.lux-entry.zooming .lux-scene {
+  animation: doorZoom 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+}
+.lux-entry.zooming .lux-auth { animation: authFade 0.6s ease forwards; }
+@keyframes doorZoom {
+  0%   { transform: scale(1); filter: brightness(1); }
+  60%  { transform: scale(6); filter: brightness(1.2); }
+  100% { transform: scale(16); filter: brightness(2.4); opacity: 0; }
+}
+@keyframes authFade {
+  to { opacity: 0; transform: translateY(14px) scale(0.98); }
+}
+
+/* Auth glass panel floating over the scene */
+.lux-auth {
+  position: relative;
+  z-index: 3;
+  width: min(92vw, 440px);
+  padding: 38px 34px;
+}
+.lux-auth h1 { font-size: 2.2rem; margin: 0 0 4px; }
+.lux-auth .sub { color: var(--lux-ink-soft); margin-bottom: 22px; }
+
+/* Gentle entrance for cards/pages */
+.lux-rise { animation: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* ============================================================
+   Liquid-glass chat window
+   ============================================================ */
+.lux-chat {
+  display: flex;
+  flex-direction: column;
+  height: 62vh;
+  min-height: 420px;
+  border-radius: var(--lux-radius);
+  border: 1px solid var(--lux-glass-border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  box-shadow: var(--lux-shadow);
+  overflow: hidden;
+  position: relative;
+}
+/* moving liquid highlight */
+.lux-chat::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -30%;
+  width: 160%;
+  height: 80%;
+  background: radial-gradient(circle at 30% 30%, rgba(243,217,139,0.16), transparent 60%);
+  filter: blur(30px);
+  animation: liquid 12s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes liquid {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to   { transform: translate(12%, 18%) rotate(8deg); }
+}
+.lux-chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1;
+}
+.lux-bubble {
+  max-width: 74%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  line-height: 1.45;
+  position: relative;
+  border: 1px solid var(--lux-glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  animation: rise 0.4s ease both;
+}
+.lux-bubble .meta { font-size: 0.72rem; color: var(--lux-ink-dim); margin-bottom: 4px; letter-spacing: 0.5px; }
+.lux-bubble.mine {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(243,217,139,0.28), rgba(212,175,55,0.16));
+  border-color: rgba(212,175,55,0.45);
+}
+.lux-bubble.theirs {
+  align-self: flex-start;
+  background: rgba(255,255,255,0.07);
+}
+.lux-chat-input {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid var(--lux-glass-border);
+  background: rgba(10,14,23,0.35);
+  z-index: 1;
+}
+
+/* ---------- Tables / rows ---------- */
+.lux-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--lux-glass-border);
+  border-radius: var(--lux-radius-sm);
+  background: var(--lux-glass);
+  transition: border-color 0.2s, transform 0.2s;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+.lux-row:hover { border-color: var(--lux-gold); transform: translateX(3px); }
+
+/* ---------- Notification bell ---------- */
+.lux-bell { position: relative; cursor: pointer; }
+.lux-bell .dot {
+  position: absolute;
+  top: -4px; right: -4px;
+  min-width: 18px; height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--lux-rose);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.lux-panel {
+  position: absolute;
+  right: 0;
+  top: 44px;
+  width: 340px;
+  max-height: 460px;
+  overflow-y: auto;
+  z-index: 50;
+  padding: 10px;
+}
+.lux-noti {
+  padding: 12px 14px;
+  border-radius: var(--lux-radius-sm);
+  border: 1px solid transparent;
+  transition: background 0.2s;
+}
+.lux-noti:hover { background: var(--lux-glass); }
+.lux-noti.unread { border-color: rgba(212,175,55,0.35); background: rgba(212,175,55,0.06); }
+.lux-noti .t { font-weight: 600; }
+.lux-noti .b { color: var(--lux-ink-soft); font-size: 0.86rem; }
+.lux-noti .time { color: var(--lux-ink-dim); font-size: 0.72rem; }
+
+/* ---------- Navbar ---------- */
+.lux-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 26px;
+  background: rgba(10, 14, 23, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom: 1px solid var(--lux-glass-border);
+}
+.lux-nav .brand { font-family: var(--lux-font); font-size: 1.5rem; color: var(--lux-gold-2); display: flex; align-items: center; gap: 10px; }
+.lux-nav .links { display: flex; align-items: center; gap: 8px; }
+.lux-nav a, .lux-nav .navlink {
+  color: var(--lux-ink-soft);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.lux-nav a:hover, .lux-nav .navlink:hover { color: var(--lux-gold-2); background: var(--lux-glass); }
+.lux-nav .navlink.active { color: var(--lux-gold-2); background: var(--lux-glass-strong); }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.35); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Spinner */
+.lux-spinner {
+  width: 22px; height: 22px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: var(--lux-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.lux-alert {
+  padding: 12px 16px;
+  border-radius: var(--lux-radius-sm);
+  margin-bottom: 14px;
+  border: 1px solid;
+}
+.lux-alert.error { color: var(--lux-rose); border-color: rgba(217,134,149,0.5); background: rgba(217,134,149,0.08); }
+.lux-alert.ok { color: var(--lux-emerald); border-color: rgba(63,174,143,0.5); background: rgba(63,174,143,0.08); }
+
+/* ---------- Marketing landing ---------- */
+.lux-land { position: relative; z-index: 1; overflow-x: hidden; }
+
+.lux-land-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 26px 28px;
+}
+.lux-land-nav .brand {
+  font-family: var(--lux-font);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--lux-gold-2);
+  letter-spacing: 0.5px;
+}
+
+.lux-land-hero {
+  position: relative;
+  z-index: 2;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 70px 28px 40px;
+  text-align: center;
+}
+.lux-land-hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 1.04;
+  margin: 10px 0 0;
+}
+.lux-land-sub {
+  color: var(--lux-ink-soft);
+  font-size: 1.12rem;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 20px auto 0;
+}
+
+.lux-land-section {
+  position: relative;
+  z-index: 2;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 56px 28px;
+}
+.lux-land-h2 {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  margin: 6px 0 0;
+}
+
+.lux-land-cta {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 760px;
+  margin: 20px auto 0;
+  padding: 56px 28px;
+}
+
+.lux-land-foot {
+  position: relative;
+  z-index: 2;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 30px 28px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid var(--lux-glass-border);
+  color: var(--lux-ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Keep the cinematic facade as a soft, fixed backdrop on the landing. */
+.lux-land .lux-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ---------- Not found ---------- */
+.lux-notfound {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+.lux-notfound .code {
+  font-family: var(--lux-font);
+  font-size: clamp(4rem, 14vw, 9rem);
+  color: var(--lux-gold);
+  line-height: 1;
+}
